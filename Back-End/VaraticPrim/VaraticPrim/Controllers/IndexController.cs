@@ -2,10 +2,12 @@
 
 namespace VaraticPrim.Controllers;
 
-public class IndexController : Controller
+[Route("[controller]")]
+public class IndexController : ControllerBase
 {
-    public string Index()
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
-        return "Hi there";
+        return Ok("Salut");
     }
 }

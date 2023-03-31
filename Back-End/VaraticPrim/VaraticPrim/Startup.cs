@@ -1,16 +1,18 @@
 ﻿namespace VaraticPrim;
 
 public class Startup {
-    public IConfiguration configRoot { get; }
+    public IConfiguration ConfigRoot { get; }
     
     public Startup(IConfiguration configuration) 
     {
-        configRoot = configuration;
+        ConfigRoot = configuration;
     }
     
-    public void ConfigureServices(IServiceCollection services) 
+    public void ConfigureServices(IServiceCollection services)
     {
-        services.AddRazorPages();
+        services.AddControllers();
+        services.AddOptions();
+        services.AddEndpointsApiExplorer();
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env) 
@@ -25,12 +27,5 @@ public class Startup {
         app.UseRouting();
         app.UseHttpsRedirection();
         app.UseAuthentication();
-        
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
     }
 }
