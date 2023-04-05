@@ -10,5 +10,7 @@ public class UserProfile : Profile
     {
         CreateMap<UserEntity, UserCreateModel>();
         CreateMap<UserCreateModel, UserEntity>();
+        CreateMap<UserEntity, UserModel>();
+        CreateMap<UserModel, UserEntity>();
     }
 }

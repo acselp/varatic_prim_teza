@@ -24,12 +24,12 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<UserCreateModel> Create([FromBody] UserCreateModel userModel)
+    public async Task<UserModel> Create([FromBody] UserCreateModel userModel)
     {
         UserEntity userEntity = _mapper.Map<UserEntity>(userModel);
         
         await _userRepository.Insert(userEntity);
         
-        return _mapper.Map<UserCreateModel>(userEntity);
+        return _mapper.Map<UserModel>(userEntity);
     }
 }

@@ -24,8 +24,8 @@ public class Startup {
         var mapperConfig = new MapperConfiguration(mc => {
             mc.AddProfile(new UserProfile());
         });
-        IMapper mapper = mapperConfig.CreateMapper();
-        services.AddSingleton(mapper);
+        
+        services.AddSingleton(mapperConfig.CreateMapper());
         
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
