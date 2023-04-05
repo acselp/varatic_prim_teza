@@ -20,13 +20,6 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
-        
-        var mapperConfig = new MapperConfiguration(mc => {
-            mc.AddProfile(new UserProfile());
-        });
-        
-        services.AddSingleton(mapperConfig.CreateMapper());
-        
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
