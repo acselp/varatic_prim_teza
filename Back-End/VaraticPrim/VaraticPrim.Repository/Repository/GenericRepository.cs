@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using VaraticPrim.Repository.Entity;
+using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Persistance;
 
 namespace VaraticPrim.Repository.Repository;

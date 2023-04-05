@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using VaraticPrim.Repository.Entity;
-using VaraticPrim.Repository.Models.UserModels;
+using VaraticPrim.Domain.Entity;
+using VaraticPrim.Models.UserModels;
 
-namespace VaraticPrim.Repository.AutoMapperProfiles;
+namespace VaraticPrim.AutoMapperProfiles;
 
 public class UserProfile : Profile
 {

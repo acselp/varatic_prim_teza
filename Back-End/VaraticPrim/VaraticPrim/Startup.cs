@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
+using VaraticPrim.AutoMapperProfiles;
 using VaraticPrim.Repository;
-using VaraticPrim.Repository.AutoMapperProfiles;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
 

@@ -1,4 +1,4 @@
-﻿using VaraticPrim.Repository.Entity;
+﻿using VaraticPrim.Domain.Entity;
 
 namespace VaraticPrim.Repository.Repository;
 

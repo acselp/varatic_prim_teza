@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace VaraticPrim.Repository.Entity.Configurations;
+namespace VaraticPrim.Domain.Entity.Configurations;
 
 public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {

@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Repository.Models.UserModels;
+﻿namespace VaraticPrim.Models.UserModels;
 
 public class UserCreateModel
 {

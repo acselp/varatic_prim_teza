@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VaraticPrim.Repository.Entity;
+﻿namespace VaraticPrim.Domain.Entity;
 
 public class BaseEntity
 {

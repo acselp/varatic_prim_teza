@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using VaraticPrim.Repository.Entity;
-using VaraticPrim.Repository.Models.UserModels;
+using VaraticPrim.Domain.Entity;
+using VaraticPrim.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 
 namespace VaraticPrim.Controllers;
@@ -18,9 +18,9 @@ public class UserController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<UserEntity> Test()
+    public async Task<UserEntity> Test([FromRoute] int id)
     {
-        return await _userRepository.GetById(1);
+        return await _userRepository.GetById(id);
     }
 
     [HttpPost]
