@@ -1,7 +1,10 @@
-﻿namespace VaraticPrim.Repository.Entity;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VaraticPrim.Repository.Entity;
 
 public class User
 {
-    private int id { get; set; }
-    private string username { get; set; }
+    [Key] 
+    public int Id { get; set; }
+    public string Username { get; set; }
 }

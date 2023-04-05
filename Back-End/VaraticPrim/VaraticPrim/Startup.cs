@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Serilog;
 using VaraticPrim.Repository;
 using VaraticPrim.Repository.Persistance;
+using VaraticPrim.Repository.Repository;
 
 namespace VaraticPrim;
 
@@ -18,13 +20,14 @@ public class Startup {
     {
         services.AddDbContextPool<ApplicationDbContext>(
             options => options.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
-        
+
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
     }
     
-    public void Configure(WebApplication app, IWebHostEnvironment env) 
+    public void Configure(WebApplication app, IWebHostEnvironment env)
     {
         if (!env.IsDevelopment()) 
         {
@@ -34,7 +37,6 @@ public class Startup {
         }
         
         app.UseRouting();
-        app.UseHttpsRedirection();
         app.UseAuthentication();
     }
 }
