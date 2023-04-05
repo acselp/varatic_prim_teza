@@ -4,9 +4,9 @@ namespace VaraticPrim.Repository.Repository;
 
 public interface IUserRepository
 {
-    public User GetUser(int id);
-    public IEnumerable<User> GetAllUsers();
-    public User Add(User user);
-    public User Update(User user);
-    public User Delete(int id);
+    public UserEntity GetUser(int id);
+    public IEnumerable<UserEntity> GetAllUsers();
+    public UserEntity Add(UserEntity user);
+    public UserEntity Update(UserEntity user);
+    public UserEntity Delete(int id);
 }

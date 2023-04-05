@@ -13,17 +13,17 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public User GetUser(int id)
+    public UserEntity GetUser(int id)
     {
         return _context.Users.Find(id);
     }
 
-    public IEnumerable<User> GetAllUsers()
+    public IEnumerable<UserEntity> GetAllUsers()
     {
         return _context.Users;
     }
 
-    public User Add(User user)
+    public UserEntity Add(UserEntity user)
     {
         _context.Add(user);
         _context.SaveChanges();
@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public User Update(User userChanges)
+    public UserEntity Update(UserEntity userChanges)
     {
         var user = _context.Users.Attach(userChanges);
         user.State = EntityState.Modified;
@@ -40,9 +40,9 @@ public class UserRepository : IUserRepository
         return userChanges;
     }
 
-    public User Delete(int id)
+    public UserEntity Delete(int id)
     {
-        User user = _context.Users.Find(id);
+        UserEntity user = _context.Users.Find(id);
 
         if (user != null)
         {

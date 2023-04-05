@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<User> Create(User user)
+    public async Task<UserEntity> Create(UserEntity user)
     {
         _userRepository.Add(user);
 
