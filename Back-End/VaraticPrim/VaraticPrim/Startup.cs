@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
+using VaraticPrim.AutoMapperProfiles;
 using VaraticPrim.Repository;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
@@ -18,13 +20,16 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContextPool<ApplicationDbContext>(
-            options => options.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
+        services.AddDbContextPool<ApplicationDbContext>(options => options
+            .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
+            .UseSnakeCaseNamingConvention());
 
+        services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
+        services.AddAutoMapper(typeof(Startup));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)

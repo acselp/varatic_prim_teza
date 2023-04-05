@@ -10,4 +10,8 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

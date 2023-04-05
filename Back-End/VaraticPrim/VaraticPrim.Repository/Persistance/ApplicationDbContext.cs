@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VaraticPrim.Repository.Entity;
+using VaraticPrim;
+using VaraticPrim.Domain.Entity.Configurations;
 
 namespace VaraticPrim.Repository.Persistance;
 
@@ -9,6 +10,9 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
-    
-    public DbSet<UserEntity> Users { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+    }
 }

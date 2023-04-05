@@ -1,30 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using VaraticPrim.Repository.Entity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Domain.Entity;
+using VaraticPrim.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 
 namespace VaraticPrim.Controllers;
 
-[Route("[controller]/[action]")]
+[Route("[controller]/[action]/{id?}")]
 public class UserController : ControllerBase
 {
-    IUserRepository _userRepository;
-
-    public UserController(IUserRepository userRepository)
+    private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
+    public UserController(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
     
     [HttpGet]
-    public async Task<UserEntity> Test()
+    public async Task<UserEntity> Test([FromRoute] int id)
     {
-        return _userRepository.GetUser(1);
+        return await _userRepository.GetById(id);
     }
 
     [HttpPost]
-    public async Task<UserEntity> Create(UserEntity user)
+    public async Task<UserModel> Create([FromBody] UserCreateModel userModel)
     {
-        _userRepository.Add(user);
-
-        return user;
+        UserEntity userEntity = _mapper.Map<UserEntity>(userModel);
+        
+        await _userRepository.Insert(userEntity);
+        
+        return _mapper.Map<UserModel>(userEntity);
     }
 }
