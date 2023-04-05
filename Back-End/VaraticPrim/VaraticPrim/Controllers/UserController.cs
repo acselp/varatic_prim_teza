@@ -4,11 +4,10 @@ using VaraticPrim.Repository.Repository;
 
 namespace VaraticPrim.Controllers;
 
-[Route("[controller]/[action]")]
+[Route("[controller]/[action]/{id?}")]
 public class UserController : ControllerBase
 {
-    IUserRepository _userRepository;
-
+    private readonly IUserRepository _userRepository;
     public UserController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
@@ -17,13 +16,15 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<UserEntity> Test()
     {
-        return _userRepository.GetUser(1);
+        return await _userRepository.GetById(1);
     }
 
     [HttpPost]
-    public async Task<UserEntity> Create(UserEntity user)
+    public async Task<UserEntity> Create([FromBody] UserEntity user)
     {
-        _userRepository.Add(user);
+        //MODEL FROM POSTMAN MAP TO ENTITY
+        //MAP TO USERMODEL
+        await _userRepository.Insert(user);
 
         return user;
     }

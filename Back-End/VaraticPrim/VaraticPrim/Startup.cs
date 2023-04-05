@@ -18,9 +18,11 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContextPool<ApplicationDbContext>(
-            options => options.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
+        services.AddDbContextPool<ApplicationDbContext>(options => options
+            .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
+            .UseSnakeCaseNamingConvention());
 
+        services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddControllers();
         services.AddOptions();
