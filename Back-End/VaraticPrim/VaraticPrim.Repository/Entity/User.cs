@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VaraticPrim.Repository.Entity;
 
-public class User
+[Table("VaraticPrim.User")]
+public class User : BaseEntity
 {
-    [Key] 
-    public int Id { get; set; }
     public string Username { get; set; }
 }
