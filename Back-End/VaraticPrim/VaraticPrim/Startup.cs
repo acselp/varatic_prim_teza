@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
 using VaraticPrim.Repository;
+using VaraticPrim.Repository.AutoMapperProfiles;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
 
@@ -18,6 +20,13 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
+        
+        var mapperConfig = new MapperConfiguration(mc => {
+            mc.AddProfile(new UserProfile());
+        });
+        IMapper mapper = mapperConfig.CreateMapper();
+        services.AddSingleton(mapper);
+        
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
@@ -27,6 +36,7 @@ public class Startup {
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
+        services.AddAutoMapper(typeof(Startup));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)

@@ -8,8 +8,5 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         builder.ToTable("user", schema:"varatic_prim");
-        
-        builder.Property(t => t.Username)
-            .IsRequired();
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Repository.Entity;
+using VaraticPrim.Repository.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 
 namespace VaraticPrim.Controllers;
@@ -8,9 +10,11 @@ namespace VaraticPrim.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
-    public UserController(IUserRepository userRepository)
+    private readonly IMapper _mapper;
+    public UserController(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
     
     [HttpGet]
@@ -20,12 +24,12 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<UserEntity> Create([FromBody] UserEntity user)
+    public async Task<UserCreateModel> Create([FromBody] UserCreateModel userModel)
     {
-        //MODEL FROM POSTMAN MAP TO ENTITY
-        //MAP TO USERMODEL
-        await _userRepository.Insert(user);
-
-        return user;
+        UserEntity userEntity = _mapper.Map<UserEntity>(userModel);
+        
+        await _userRepository.Insert(userEntity);
+        
+        return _mapper.Map<UserCreateModel>(userEntity);
     }
 }
