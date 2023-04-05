@@ -15,9 +15,9 @@ public class UserController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> Test()
+    public async Task<UserEntity> Test()
     {
-        return Ok("User controller test.");
+        return _userRepository.GetUser(1);
     }
 
     [HttpPost]

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VaraticPrim.Repository.Entity;
 
-[Table("VaraticPrim.User")]
+[Table("User", Schema = "VaraticPrim")]
 public class UserEntity : BaseEntity
 {
     public string Username { get; set; }
