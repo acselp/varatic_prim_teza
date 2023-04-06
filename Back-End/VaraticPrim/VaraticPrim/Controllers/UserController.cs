@@ -45,8 +45,10 @@ public class UserController : ApiBaseController
             var userEntity = _mapper.Map<UserEntity>(userModel);
 
             await _userRepository.Insert(userEntity);
+
+            var validUserModel = _mapper.Map<UserModel>(userEntity);
             
-            return Ok(_mapper.Map<UserModel>(userEntity));
+            return Ok(validUserModel);
         }
         catch (ValidationException e)
         {
