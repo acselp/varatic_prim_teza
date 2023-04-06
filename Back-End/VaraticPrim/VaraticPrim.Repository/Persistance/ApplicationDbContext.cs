@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using VaraticPrim;
-using VaraticPrim.Domain.Entity.Configurations;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace VaraticPrim.Repository.Persistance;
 
@@ -13,6 +12,6 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 }
