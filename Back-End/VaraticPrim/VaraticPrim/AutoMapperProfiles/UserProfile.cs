@@ -14,7 +14,10 @@ public class UserProfile : Profile
         
         CreateMap<UserModel, UserEntity>();
         CreateMap<UserEntity, UserModel>();
-        CreateMap<ContactModel, ContactEntity>();
+        CreateMap<ContactCreateModel, ContactEntity>();
+        CreateMap<ContactEntity, ContactCreateModel>();
         CreateMap<ContactEntity, ContactModel>();
+        CreateMap<ContactCreateModel, ContactModel>();
+        CreateMap<ContactModel, ContactCreateModel>();
     }
 }
