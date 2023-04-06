@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using Serilog.Core;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Models.UserModels;
 using VaraticPrim.Repository.Repository;
@@ -26,7 +28,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<UserModel> Create([FromBody] UserCreateModel userModel)
     {
-        UserEntity userEntity = _mapper.Map<UserEntity>(userModel);
+        var userEntity = _mapper.Map<UserEntity>(userModel);
         
         await _userRepository.Insert(userEntity);
         
