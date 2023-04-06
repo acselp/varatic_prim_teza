@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -24,6 +25,7 @@ public class Startup {
             .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
 
+        services.AddValidatorsFromAssembly(GetType().Assembly);
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddControllers();

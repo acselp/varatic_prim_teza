@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Serilog.Core;
@@ -12,9 +13,11 @@ namespace VaraticPrim.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
+    private readonly IValidator<UserCreateModel> _validator;
     private readonly IMapper _mapper;
-    public UserController(IUserRepository userRepository, IMapper mapper)
+    public UserController(IUserRepository userRepository, IMapper mapper, IValidator<UserCreateModel> validator)
     {
+        _validator = validator;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -28,8 +31,10 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<UserModel> Create([FromBody] UserCreateModel userModel)
     {
-        var userEntity = _mapper.Map<UserEntity>(userModel);
+        var userValidation = await _validator.ValidateAsync(userModel, options => options.ThrowOnFailures());
         
+        var userEntity = _mapper.Map<UserEntity>(userModel);
+
         await _userRepository.Insert(userEntity);
         
         return _mapper.Map<UserModel>(userEntity);
