@@ -23,17 +23,8 @@ public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
             .MinimumLength(3);
 
         RuleFor(user => user.Contact.Mobile)
-            .Custom((list, context) =>
-            {
-                var rx = new Regex("^((373|0)([0-9]){8})$");
-                var matches = rx.Matches(list.ToString());
-                
-                if (matches.Count == 0)
-                {
-                    context.AddFailure("This is not a moldova mobile number");
-                }
-            });
-
+            .NotEmpty()
+            .IsMoldovaMobile();
 
         RuleFor(user => user.Contact.Phone)
             .NotEmpty()
