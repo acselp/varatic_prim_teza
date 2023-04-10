@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Security.AccessControl;
+using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -6,6 +8,7 @@ using VaraticPrim.AutoMapperProfiles;
 using VaraticPrim.Repository;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Validation;
 
 namespace VaraticPrim;
 
@@ -23,7 +26,8 @@ public class Startup {
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
-
+        
+        services.AddValidatorsFromAssembly(GetType().Assembly);
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddControllers();

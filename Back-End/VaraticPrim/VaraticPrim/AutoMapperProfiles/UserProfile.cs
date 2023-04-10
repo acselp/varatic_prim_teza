@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Models.ContactModels;
 using VaraticPrim.Models.UserModels;
@@ -9,9 +10,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<UserCreateModel, UserEntity>()
-            .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Contact));
-        
+        CreateMap<UserCreateModel, UserEntity>();
         CreateMap<UserModel, UserEntity>();
         CreateMap<UserEntity, UserModel>();
         CreateMap<ContactCreateModel, ContactEntity>();
