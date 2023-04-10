@@ -7,7 +7,7 @@ public static class CustomValidatorExtensions
 {
     public static IRuleBuilderOptions<T, string> IsMoldovaMobile<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
-        var rx = new Regex("^((373|0)([0-9]){8})$");
+        var rx = new Regex(ValidatorRegex.MoldovaMobileRegex);
 
         return ruleBuilder
             .Must(list => !(rx.Matches(list.ToString()).Count == 0))

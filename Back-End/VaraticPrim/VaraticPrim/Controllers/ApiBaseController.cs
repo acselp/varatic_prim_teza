@@ -71,9 +71,7 @@ public class ApiBaseController : ControllerBase
     {
         var descriptor = ControllerContext
             .ActionDescriptor;
- 
-      
- 
+        
         return ApiErrorBuilder.New()
             .SetCode(code);
     }

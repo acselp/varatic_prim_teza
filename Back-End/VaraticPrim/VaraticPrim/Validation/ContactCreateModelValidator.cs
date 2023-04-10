@@ -5,5 +5,4 @@ namespace VaraticPrim.Validation;
 
 public class ContactCreateModelValidator : AbstractValidator<ContactCreateModel>
 {
-    
 }

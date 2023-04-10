@@ -39,6 +39,7 @@ public class UserController : ApiBaseController
     {
         try
         {
+            _logger.LogInformation("Creating user...");
             await _userValidator.ValidateAndThrowAsync(userModel);
             await _contactValidator.ValidateAndThrowAsync(userModel.Contact);
 
@@ -47,6 +48,7 @@ public class UserController : ApiBaseController
             await _userRepository.Insert(userEntity);
 
             var validUserModel = _mapper.Map<UserModel>(userEntity);
+            _logger.LogInformation("User created.");
             
             return Ok(validUserModel);
         }
