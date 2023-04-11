@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Repository;
@@ -35,6 +36,7 @@ public class UserController : ApiBaseController
         return Ok(user);
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {

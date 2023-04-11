@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Service.Exceptions;
 using VaraticPrim.Service.Interfaces;
 using VaraticPrim.Service.Models.LoginModel;
 using VaraticPrim.Service.Models.UserModels;
@@ -23,15 +24,13 @@ public class AuthenticationService : IAuthenticationService
         var currentUser = _userRepository.GetByEmail(loginModel.Email);
 
         if (currentUser != null)
-        {
             if (currentUser.PasswordHash == loginModel.Password)
             {
                 var userModel = _mapper.Map<UserModel>(currentUser);
                 
                 return userModel;
             }
-        }
-
-        return null;
+        
+        throw new EmailOrPasswordNotFoundException("Wrong email or password");
     }
 }

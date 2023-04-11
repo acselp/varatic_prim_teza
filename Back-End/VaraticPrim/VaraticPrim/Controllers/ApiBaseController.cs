@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using VaraticPrim.MvcExtentions.Errors;
+using VaraticPrim.Service.Exceptions;
 
 namespace VaraticPrim.Controllers;
 

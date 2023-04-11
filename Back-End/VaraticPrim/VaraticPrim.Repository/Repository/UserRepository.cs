@@ -12,7 +12,7 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 
     public UserEntity? GetByEmail(string email)
     {
-        var user = Table.FirstOrDefault(u => u.Email == email);
+        var user = Table.FirstOrDefault(u => u.Email == email.ToLower().Trim());
 
         return user;
     }
