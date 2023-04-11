@@ -23,17 +23,7 @@ public class ApiBaseController : ControllerBase
  
         return BadRequest(error);
     }
-    
-    protected IActionResult DBError(PostgresException exception)
-    {
-        var errors = new ApiErrorModel.ApiError()
-        {
-            ErrorMessage = exception.Message
-        };
-        
-        return BadRequest(errors);
-    }
- 
+
     protected IActionResult BadRequest(ApiErrorModel model)
     {
         return RestResponse(HttpStatusCode.BadRequest, model);
