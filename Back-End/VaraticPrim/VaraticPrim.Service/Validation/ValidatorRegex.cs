@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace VaraticPrim.Validation;
+namespace VaraticPrim.Service.Validation;
 
 public static class ValidatorRegex
 {

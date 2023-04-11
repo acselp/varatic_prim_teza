@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
-using Serilog;
-using Serilog.Core;
 using VaraticPrim.Domain.Entity;
-using VaraticPrim.Models.ContactModels;
-using VaraticPrim.Models.UserModels;
 using VaraticPrim.Repository.Repository;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using VaraticPrim.Service.Models.ContactModels;
+using VaraticPrim.Service.Models.UserModels;
 
 namespace VaraticPrim.Controllers;
 
@@ -19,21 +13,15 @@ public class UserController : ApiBaseController
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<UserCreateModel> _userValidator;
-    private readonly IValidator<ContactCreateModel> _contactValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
-    private readonly IConfiguration _config;
     public UserController(
         IUserRepository userRepository, 
         IMapper mapper, 
         IValidator<UserCreateModel> userValidator, 
-        IValidator<ContactCreateModel> contactValidator, 
-        ILogger<UserController> logger,
-        IConfiguration config)
+        ILogger<UserController> logger)
     {
-        _config = config;
         _userValidator = userValidator;
-        _contactValidator = contactValidator;
         _logger = logger;
         _userRepository = userRepository;
         _mapper = mapper;
@@ -54,7 +42,6 @@ public class UserController : ApiBaseController
         {
             _logger.LogInformation("Creating user...");
             await _userValidator.ValidateAndThrowAsync(userModel);
-            await _contactValidator.ValidateAndThrowAsync(userModel.Contact);
 
             var userEntity = _mapper.Map<UserEntity>(userModel);
 
@@ -68,10 +55,6 @@ public class UserController : ApiBaseController
         catch (ValidationException e)
         {
             return ValidationError(e);
-        }
-        catch (PostgresException e)
-        {
-            return DBError(e);
         }
         catch (Exception e)
         {

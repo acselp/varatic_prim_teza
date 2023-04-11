@@ -1,7 +1,6 @@
-﻿using System.Text.RegularExpressions;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace VaraticPrim.Validation;
+namespace VaraticPrim.Service.Validation;
 
 public static class CustomValidatorExtensions
 {

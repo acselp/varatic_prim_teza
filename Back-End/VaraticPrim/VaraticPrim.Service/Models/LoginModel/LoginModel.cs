@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Models.LoginModel;
+﻿namespace VaraticPrim.Service.Models.LoginModel;
 
 public class LoginModel
 {

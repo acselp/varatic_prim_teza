@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using VaraticPrim.MvcExtentions.Errors;
 
 namespace VaraticPrim.Controllers;
 

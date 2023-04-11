@@ -1,6 +1,6 @@
-﻿using VaraticPrim.Models.ContactModels;
+﻿using VaraticPrim.Service.Models.ContactModels;
 
-namespace VaraticPrim.Models.UserModels;
+namespace VaraticPrim.Service.Models.UserModels;
 
 public class UserModel
 {

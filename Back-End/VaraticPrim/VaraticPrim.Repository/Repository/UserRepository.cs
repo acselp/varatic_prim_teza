@@ -12,8 +12,8 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 
     public UserEntity? GetByEmail(string email)
     {
-        return Context
-            .Set<UserEntity>()
-            .FirstOrDefault(u => u.Email == email);
+        var user = Table.FirstOrDefault(u => u.Email == email);
+
+        return user;
     }
 }

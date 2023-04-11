@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Models.ContactModels;
+﻿namespace VaraticPrim.Service.Models.ContactModels;
 
 public class ContactModel
 {
