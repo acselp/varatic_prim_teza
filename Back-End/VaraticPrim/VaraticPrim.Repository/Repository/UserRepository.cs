@@ -9,4 +9,11 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     public UserRepository(ApplicationDbContext context) : base(context)
     {
     }
+
+    public UserEntity? GetByEmail(string email)
+    {
+        return Context
+            .Set<UserEntity>()
+            .FirstOrDefault(u => u.Email == email);
+    }
 }

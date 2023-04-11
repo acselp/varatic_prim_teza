@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace VaraticPrim.Controllers;
 
@@ -20,6 +22,16 @@ public class ApiBaseController : ControllerBase
         };
  
         return BadRequest(error);
+    }
+    
+    protected IActionResult DBError(PostgresException exception)
+    {
+        var errors = new ApiErrorModel.ApiError()
+        {
+            ErrorMessage = exception.Message
+        };
+        
+        return BadRequest(errors);
     }
  
     protected IActionResult BadRequest(ApiErrorModel model)

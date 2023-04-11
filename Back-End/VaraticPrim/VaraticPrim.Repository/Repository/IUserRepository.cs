@@ -4,4 +4,5 @@ namespace VaraticPrim.Repository.Repository;
 
 public interface IUserRepository : IGenericRepository<UserEntity>
 {
+    public UserEntity? GetByEmail(string email);
 }

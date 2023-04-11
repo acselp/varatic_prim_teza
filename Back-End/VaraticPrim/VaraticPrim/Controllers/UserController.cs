@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Serilog;
 using Serilog.Core;
 using VaraticPrim.Domain.Entity;
@@ -19,8 +22,16 @@ public class UserController : ApiBaseController
     private readonly IValidator<ContactCreateModel> _contactValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
-    public UserController(IUserRepository userRepository, IMapper mapper, IValidator<UserCreateModel> userValidator, IValidator<ContactCreateModel> contactValidator, ILogger<UserController> logger)
+    private readonly IConfiguration _config;
+    public UserController(
+        IUserRepository userRepository, 
+        IMapper mapper, 
+        IValidator<UserCreateModel> userValidator, 
+        IValidator<ContactCreateModel> contactValidator, 
+        ILogger<UserController> logger,
+        IConfiguration config)
     {
+        _config = config;
         _userValidator = userValidator;
         _contactValidator = contactValidator;
         _logger = logger;
@@ -29,9 +40,11 @@ public class UserController : ApiBaseController
     }
     
     [HttpGet]
-    public async Task<UserEntity> Test([FromRoute] int id)
+    public async Task<IActionResult> Get([FromRoute] int id)
     {
-        return await _userRepository.GetById(id);
+        var user = await _userRepository.GetById(id);
+        
+        return Ok(user);
     }
 
     [HttpPost]
@@ -49,12 +62,16 @@ public class UserController : ApiBaseController
 
             var validUserModel = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("User created.");
-            
+
             return Ok(validUserModel);
         }
         catch (ValidationException e)
         {
             return ValidationError(e);
+        }
+        catch (PostgresException e)
+        {
+            return DBError(e);
         }
         catch (Exception e)
         {
