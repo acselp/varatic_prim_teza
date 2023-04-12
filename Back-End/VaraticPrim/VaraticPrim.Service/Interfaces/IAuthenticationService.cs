@@ -5,5 +5,5 @@ namespace VaraticPrim.Service.Interfaces;
 
 public interface IAuthenticationService
 {
-    public UserModel Authenticate(LoginModel loginModel);
+    public Task<UserModel> Authenticate(LoginModel loginModel);
 }

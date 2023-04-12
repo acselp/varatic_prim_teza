@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.Service.Interfaces;
+using VaraticPrim.Service.Models;
 using VaraticPrim.Service.Models.UserModels;
 
 namespace VaraticPrim.Service.Services;
@@ -18,7 +19,7 @@ public class TokenGeneratorService : ITokenGeneratorService
         _options = options;
     }
     
-    public string Generate(UserModel user)
+    public AccessTokenModel Generate(UserModel user)
     {
         var securityKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
@@ -30,13 +31,18 @@ public class TokenGeneratorService : ITokenGeneratorService
             new Claim(ClaimTypes.NameIdentifier, user.Email),
         };
 
+        var expirationTime = DateTime.Now.AddMinutes(_options.Value.ExpirationTime);
         var token = new JwtSecurityToken(
             _options.Value.Issuer,
             _options.Value.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: expirationTime,
             signingCredentials: credentials);
-        
-        return new JwtSecurityTokenHandler().WriteToken(token);
+
+        return new AccessTokenModel()
+        {
+            TokenExpirationTime = expirationTime,
+            Token = new JwtSecurityTokenHandler().WriteToken(token)
+        };
     }
 }

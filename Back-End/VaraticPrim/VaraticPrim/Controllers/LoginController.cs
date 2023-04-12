@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.MvcExtentions.Errors;
+using VaraticPrim.Service.Exceptions;
 using VaraticPrim.Service.Interfaces;
 using VaraticPrim.Service.Models.LoginModel;
 
@@ -23,15 +25,17 @@ public class LoginController : ApiBaseController
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
-        var user = _authenticationService.Authenticate(loginModel);
-
-        if (user != null)
+        try
         {
+            var user = await _authenticationService.Authenticate(loginModel);
             var token = _tokenGenerator.Generate(user);
 
             return Ok(token);
         }
-
-        return NotFound("User not found");
+        catch (EmailOrPasswordNotFoundException)
+        {
+            return BadRequest("email_password_not_found",
+                "Email or password incorrect");
+        }
     }
 }

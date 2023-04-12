@@ -24,7 +24,7 @@ public class InternalServerErrorExceptionFilter : IExceptionFilter
             .SetMessage("Unexpected error occured. Please contact your Administrator.")
             .Build();
         context.ExceptionHandled = true;
-        context.Result = new JsonResult(error)
+        context.Result = new OkObjectResult(error)
         {
             StatusCode = StatusCodes.Status500InternalServerError,
         };
