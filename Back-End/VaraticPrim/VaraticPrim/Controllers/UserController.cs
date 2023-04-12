@@ -18,13 +18,16 @@ public class UserController : ApiBaseController
     private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
     private readonly IAuthenticationAccessor _authenticationAccessor;
+    private readonly IHashService _hashService;
     
     public UserController(
         IUserRepository userRepository, 
         IMapper mapper, 
         IValidator<UserCreateModel> userValidator, 
-        ILogger<UserController> logger, IAuthenticationAccessor authenticationAccessor)
+        ILogger<UserController> logger, IAuthenticationAccessor authenticationAccessor,
+        IHashService hashService)
     {
+        _hashService = hashService;
         _userValidator = userValidator;
         _logger = logger;
         _authenticationAccessor = authenticationAccessor;
@@ -36,6 +39,9 @@ public class UserController : ApiBaseController
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         var user = await _userRepository.GetById(id);
+        if (user is null)
+        {
+        }
         await _authenticationAccessor.LoggedIdentity();
         
         /*
@@ -52,9 +58,13 @@ public class UserController : ApiBaseController
         {
             _logger.LogInformation("Creating user...");
             await _userValidator.ValidateAndThrowAsync(userModel);
-
+            
             var userEntity = _mapper.Map<UserEntity>(userModel);
+            var passwordSalt = _hashService.GenerateSalt();
 
+            userEntity.PasswordHash = _hashService.Hash(userModel.Password, passwordSalt);
+            userEntity.PasswordSalt = passwordSalt;
+            
             await _userRepository.Insert(userEntity);
 
             var validUserModel = _mapper.Map<UserModel>(userEntity);

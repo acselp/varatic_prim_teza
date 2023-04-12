@@ -12,5 +12,7 @@ public static class Configurator
         serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         serviceCollection.AddScoped<IAuthenticationAccessor, HttpAuthenticationAccessor>();
+        serviceCollection.AddScoped<IHashService, HashService>();
+
     }
 }

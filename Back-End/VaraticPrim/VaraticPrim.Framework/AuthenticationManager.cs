@@ -6,6 +6,7 @@ using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Framework;
 
@@ -15,9 +16,15 @@ public class AuthenticationManager
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<AuthenticationManager> _logger;
+    private readonly IHashService _hashService;
 
-    public AuthenticationManager(ITokenGeneratorService tokenGeneratorService, IMapper mapper, IUserRepository userRepository, ILogger<AuthenticationManager> logger)
+    public AuthenticationManager(ITokenGeneratorService tokenGeneratorService, 
+        IMapper mapper, 
+        IUserRepository userRepository, 
+        ILogger<AuthenticationManager> logger,
+        IHashService hashService)
     {
+        _hashService = hashService;
         _tokenGeneratorService = tokenGeneratorService;
         _mapper = mapper;
         _userRepository = userRepository;
@@ -28,13 +35,14 @@ public class AuthenticationManager
     {
         try
         {
+            
             _logger.LogInformation("Start authenticating user");
             var currentUser = await _userRepository.GetByEmail(loginModel.Email);
 
-            if ((currentUser == null) || currentUser?.PasswordHash != loginModel.Password) 
+            if ((currentUser == null) || currentUser?.PasswordHash != _hashService.Hash(loginModel.Password, currentUser.PasswordSalt)) 
                 throw new EmailOrPasswordNotFoundException("Wrong email or password");
             
-            var userModel = _mapper.Map<UserModel>(currentUser);       
+            var userModel = _mapper.Map<UserModel>(currentUser); 
             return _tokenGeneratorService.Generate(userModel);
         }
         catch (Exception e)
