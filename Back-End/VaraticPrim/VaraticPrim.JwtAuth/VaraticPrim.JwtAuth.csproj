@@ -8,11 +8,12 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.2" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.2.23128.3" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+      <ProjectReference Include="..\VaraticPrim.MvcExtentions\VaraticPrim.MvcExtentions.csproj" />
     </ItemGroup>
 
 </Project>

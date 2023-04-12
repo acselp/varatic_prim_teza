@@ -1,8 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using FluentValidation;
-using VaraticPrim.Models.UserModels;
+﻿using FluentValidation;
+using VaraticPrim.Service.Models.UserModels;
 
-namespace VaraticPrim.Validation;
+namespace VaraticPrim.Service.Validation;
 
 public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
 {

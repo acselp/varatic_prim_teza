@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Controllers;
+﻿namespace VaraticPrim.MvcExtentions.Errors;
 
 public class ApiErrorBuilder
 {

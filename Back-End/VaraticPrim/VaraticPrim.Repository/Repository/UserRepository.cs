@@ -9,4 +9,9 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     public UserRepository(ApplicationDbContext context) : base(context)
     {
     }
+
+    public async Task<UserEntity?> GetByEmail(string email)
+    {
+        return await Table.FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
+    }
 }

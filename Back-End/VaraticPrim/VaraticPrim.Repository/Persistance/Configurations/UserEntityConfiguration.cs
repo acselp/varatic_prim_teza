@@ -8,8 +8,9 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
-        builder.ToTable("user", schema: "varatic_prim")
-            .HasOne<ContactEntity>(c => c.Contact)
+        builder.ToTable("user", schema: "varatic_prim");
+        
+        builder.HasOne<ContactEntity>(u => u.Contact)
             .WithMany()
             .HasForeignKey(u => u.ContactId);
     }

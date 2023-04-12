@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using Serilog.Core;
 using VaraticPrim.Domain.Entity;
-using VaraticPrim.Models.ContactModels;
-using VaraticPrim.Models.UserModels;
 using VaraticPrim.Repository.Repository;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
+using VaraticPrim.Service.Authentication;
+using VaraticPrim.Service.Interfaces;
+using VaraticPrim.Service.Models.ContactModels;
+using VaraticPrim.Service.Models.UserModels;
 
 namespace VaraticPrim.Controllers;
 
@@ -16,24 +17,36 @@ public class UserController : ApiBaseController
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<UserCreateModel> _userValidator;
-    private readonly IValidator<ContactCreateModel> _contactValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
-    public UserController(IUserRepository userRepository, IMapper mapper, IValidator<UserCreateModel> userValidator, IValidator<ContactCreateModel> contactValidator, ILogger<UserController> logger)
+    private readonly IAuthenticationAccessor _authenticationAccessor;
+    
+    public UserController(
+        IUserRepository userRepository, 
+        IMapper mapper, 
+        IValidator<UserCreateModel> userValidator, 
+        ILogger<UserController> logger, IAuthenticationAccessor authenticationAccessor)
     {
         _userValidator = userValidator;
-        _contactValidator = contactValidator;
         _logger = logger;
+        _authenticationAccessor = authenticationAccessor;
         _userRepository = userRepository;
         _mapper = mapper;
     }
     
     [HttpGet]
-    public async Task<UserEntity> Test([FromRoute] int id)
+    public async Task<IActionResult> Get([FromRoute] int id)
     {
-        return await _userRepository.GetById(id);
+        var user = await _userRepository.GetById(id);
+        await _authenticationAccessor.LoggedIdentity();
+        
+        /*
+        _logger.LogInformation("Token: " + token);*/
+        
+        return Ok(user);
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {
@@ -41,7 +54,6 @@ public class UserController : ApiBaseController
         {
             _logger.LogInformation("Creating user...");
             await _userValidator.ValidateAndThrowAsync(userModel);
-            await _contactValidator.ValidateAndThrowAsync(userModel.Contact);
 
             var userEntity = _mapper.Map<UserEntity>(userModel);
 
@@ -49,7 +61,7 @@ public class UserController : ApiBaseController
 
             var validUserModel = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("User created.");
-            
+
             return Ok(validUserModel);
         }
         catch (ValidationException e)
