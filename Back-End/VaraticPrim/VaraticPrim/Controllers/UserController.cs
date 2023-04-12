@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Service.Authentication;
+using VaraticPrim.Service.Interfaces;
 using VaraticPrim.Service.Models.ContactModels;
 using VaraticPrim.Service.Models.UserModels;
 
@@ -16,14 +19,17 @@ public class UserController : ApiBaseController
     private readonly IValidator<UserCreateModel> _userValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
+    private readonly IAuthenticationAccessor _authenticationAccessor;
+    
     public UserController(
         IUserRepository userRepository, 
         IMapper mapper, 
         IValidator<UserCreateModel> userValidator, 
-        ILogger<UserController> logger)
+        ILogger<UserController> logger, IAuthenticationAccessor authenticationAccessor)
     {
         _userValidator = userValidator;
         _logger = logger;
+        _authenticationAccessor = authenticationAccessor;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -32,6 +38,10 @@ public class UserController : ApiBaseController
     public async Task<IActionResult> Get([FromRoute] int id)
     {
         var user = await _userRepository.GetById(id);
+        await _authenticationAccessor.LoggedIdentity();
+        
+        /*
+        _logger.LogInformation("Token: " + token);*/
         
         return Ok(user);
     }

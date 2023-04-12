@@ -1,7 +1,7 @@
 ﻿using VaraticPrim.Service.Models;
 using VaraticPrim.Service.Models.UserModels;
 
-namespace VaraticPrim.Service.Interfaces;
+namespace VaraticPrim.Service.Authentication;
 
 public interface ITokenGeneratorService
 {

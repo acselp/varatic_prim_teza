@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Exceptions;
-using VaraticPrim.Service.Interfaces;
 using VaraticPrim.Service.Models.LoginModel;
 using VaraticPrim.Service.Models.UserModels;
 
-namespace VaraticPrim.Service.Services;
+namespace VaraticPrim.Service.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -15,7 +13,10 @@ public class AuthenticationService : IAuthenticationService
     private readonly IMapper _mapper;
     private readonly ILogger<AuthenticationService> _logger;
 
-    public AuthenticationService(IUserRepository userRepository, IMapper mapper, ILogger<AuthenticationService> logger)
+    public AuthenticationService(
+        IUserRepository userRepository,
+        IMapper mapper, 
+        ILogger<AuthenticationService> logger)
     {
         _userRepository = userRepository;
         _mapper = mapper;

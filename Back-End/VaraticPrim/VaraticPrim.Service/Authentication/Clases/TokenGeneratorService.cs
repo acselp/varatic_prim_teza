@@ -8,7 +8,7 @@ using VaraticPrim.Service.Interfaces;
 using VaraticPrim.Service.Models;
 using VaraticPrim.Service.Models.UserModels;
 
-namespace VaraticPrim.Service.Services;
+namespace VaraticPrim.Service.Authentication;
 
 public class TokenGeneratorService : ITokenGeneratorService
 {
@@ -28,7 +28,7 @@ public class TokenGeneratorService : ITokenGeneratorService
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Email),
+            new Claim(ClaimsTypes.UserId, user.Id.ToString()),
         };
 
         var expirationTime = DateTime.Now.AddMinutes(_options.Value.ExpirationTime);
