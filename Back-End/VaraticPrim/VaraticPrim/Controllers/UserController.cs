@@ -4,11 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Domain.Entity;
+using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
-using VaraticPrim.Service.Authentication;
 using VaraticPrim.Service.Interfaces;
-using VaraticPrim.Service.Models.ContactModels;
-using VaraticPrim.Service.Models.UserModels;
 
 namespace VaraticPrim.Controllers;
 

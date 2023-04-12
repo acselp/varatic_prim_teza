@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.JwtAuth", "Vara
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.MvcExtentions", "VaraticPrim.MvcExtentions\VaraticPrim.MvcExtentions.csproj", "{2E5EB882-F4C2-4BE2-8F8E-EBAA7F75C991}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.Framework", "VaraticPrim.Framework\VaraticPrim.Framework.csproj", "{05F6B666-73DE-41A8-AA9B-FBBFD75587A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{2E5EB882-F4C2-4BE2-8F8E-EBAA7F75C991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E5EB882-F4C2-4BE2-8F8E-EBAA7F75C991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E5EB882-F4C2-4BE2-8F8E-EBAA7F75C991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F6B666-73DE-41A8-AA9B-FBBFD75587A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F6B666-73DE-41A8-AA9B-FBBFD75587A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F6B666-73DE-41A8-AA9B-FBBFD75587A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F6B666-73DE-41A8-AA9B-FBBFD75587A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

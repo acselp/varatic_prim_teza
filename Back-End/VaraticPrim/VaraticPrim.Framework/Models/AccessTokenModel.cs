@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Service.Models;
+﻿namespace VaraticPrim.Framework.Models;
 
 public class AccessTokenModel
 {

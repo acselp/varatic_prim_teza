@@ -1,35 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Framework;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Controllers;
 
-[Route("[controller]/[action]/{id?}")]
-public class LoginController : ApiBaseController
+[Route("[controller]")]
+public class AuthenticationController : ApiBaseController
 {
-    private readonly ITokenGeneratorService _tokenGenerator;
-    private readonly IAuthenticationService _authenticationService;
-    
-    public LoginController(
-        ITokenGeneratorService tokenGenerator,
-        IAuthenticationService authenticationSevice)
+    private readonly AuthenticationManager _authenticationManager;
+    public AuthenticationController(AuthenticationManager authenticationManager)
     {
-        _tokenGenerator = tokenGenerator;
-        _authenticationService = authenticationSevice;
+        _authenticationManager = authenticationManager;
     }
     
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
         try
         {
-            var user = await _authenticationService.Authenticate(loginModel);
-            var token = _tokenGenerator.Generate(user);
-
-            return Ok(token);
+            var model = await _authenticationManager.Login(loginModel);
+            return Ok(model);
         }
         catch (EmailOrPasswordNotFoundException)
         {

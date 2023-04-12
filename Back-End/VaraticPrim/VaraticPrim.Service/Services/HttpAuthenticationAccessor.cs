@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Repository.Repository;
-using VaraticPrim.Service.Authentication.Interfaces;
+using VaraticPrim.Service.Authentication;
+using VaraticPrim.Service.Interfaces;
 
-namespace VaraticPrim.Service.Authentication.Clases;
+namespace VaraticPrim.Service.Services;
 
 internal class HttpAuthenticationAccessor : IAuthenticationAccessor
 {

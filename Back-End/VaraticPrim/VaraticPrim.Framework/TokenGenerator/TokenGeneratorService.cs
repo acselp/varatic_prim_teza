@@ -7,9 +7,8 @@ using VaraticPrim.Framework.Models;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.Service.Authentication;
-using VaraticPrim.Service.Interfaces;
 
-namespace VaraticPrim.Service.Services;
+namespace VaraticPrim.Framework.TokenGenerator;
 
 public class TokenGeneratorService : ITokenGeneratorService
 {

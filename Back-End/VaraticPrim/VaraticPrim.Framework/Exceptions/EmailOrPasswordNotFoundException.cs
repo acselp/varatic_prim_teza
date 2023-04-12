@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Service.Exceptions;
+﻿namespace VaraticPrim.Framework.Exceptions;
 
 public class EmailOrPasswordNotFoundException : Exception
 {

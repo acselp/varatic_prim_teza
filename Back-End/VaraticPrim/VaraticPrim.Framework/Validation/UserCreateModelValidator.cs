@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using VaraticPrim.Service.Models.UserModels;
+using VaraticPrim.Framework.Models.UserModels;
 
-namespace VaraticPrim.Service.Validation;
+namespace VaraticPrim.Framework.Validation;
 
 public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
 {

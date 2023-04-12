@@ -1,6 +1,6 @@
-﻿using VaraticPrim.Service.Models.ContactModels;
+﻿using VaraticPrim.Framework.Models.ContactModels;
 
-namespace VaraticPrim.Service.Models.UserModels;
+namespace VaraticPrim.Framework.Models.UserModels;
 
 public class UserCreateModel
 {

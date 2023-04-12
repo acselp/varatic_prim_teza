@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Service.Authentication.Clases;
+﻿namespace VaraticPrim.Service.Authentication;
 
 public static class ClaimsTypes
 {

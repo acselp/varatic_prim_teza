@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Models.ContactModels;
 using VaraticPrim.Framework.Models.UserModels;
 
-namespace VaraticPrim.AutoMapperProfiles;
+namespace VaraticPrim.Framework.AutoMapperProfiles;
 
 public class UserProfile : Profile
 {

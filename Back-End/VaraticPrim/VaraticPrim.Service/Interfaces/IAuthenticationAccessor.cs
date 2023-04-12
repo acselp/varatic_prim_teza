@@ -1,6 +1,6 @@
 ﻿using VaraticPrim.Domain.Entity;
 
-namespace VaraticPrim.Service.Authentication.Interfaces;
+namespace VaraticPrim.Service.Interfaces;
 
 public interface IAuthenticationAccessor
 {

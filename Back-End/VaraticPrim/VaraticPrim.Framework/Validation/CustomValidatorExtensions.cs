@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace VaraticPrim.Service.Validation;
+namespace VaraticPrim.Framework.Validation;
 
 public static class CustomValidatorExtensions
 {
