@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VaraticPrim.MvcExtentions.Errors;
-using VaraticPrim.Service.Authentication;
-using VaraticPrim.Service.Exceptions;
+using VaraticPrim.Framework.Exceptions;
+using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Service.Interfaces;
-using VaraticPrim.Service.Models.LoginModel;
 
 namespace VaraticPrim.Controllers;
 

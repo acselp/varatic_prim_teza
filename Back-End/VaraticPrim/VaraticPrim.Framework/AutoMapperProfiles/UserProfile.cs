@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using VaraticPrim.Domain.Entity;
-using VaraticPrim.Service.Models.ContactModels;
-using VaraticPrim.Service.Models.UserModels;
+using VaraticPrim.Framework.Models.ContactModels;
+using VaraticPrim.Framework.Models.UserModels;
 
 namespace VaraticPrim.AutoMapperProfiles;
 

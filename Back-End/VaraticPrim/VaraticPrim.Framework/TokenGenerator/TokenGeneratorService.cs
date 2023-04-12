@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using VaraticPrim.Framework.Models;
+using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.JwtAuth;
+using VaraticPrim.Service.Authentication;
 using VaraticPrim.Service.Interfaces;
-using VaraticPrim.Service.Models;
-using VaraticPrim.Service.Models.UserModels;
 
-namespace VaraticPrim.Service.Authentication;
+namespace VaraticPrim.Service.Services;
 
 public class TokenGeneratorService : ITokenGeneratorService
 {
