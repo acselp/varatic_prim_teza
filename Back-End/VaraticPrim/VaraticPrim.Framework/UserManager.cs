@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Exceptions;
+using VaraticPrim.Framework.Models.ContactModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
@@ -39,22 +40,22 @@ public class UserManager
         try
         {
             _logger.LogInformation("Creating user...");
-            _userValidator.ValidateAndThrowAsync(userCreateModel);
+            await _userValidator.ValidateAndThrowAsync(userCreateModel);
             
-              var user = await _userRepository.GetByEmail(userCreateModel.Email);
-              if(user != null)
+            var user = await _userRepository.GetByEmail(userCreateModel.Email);
+            if(user != null)
                 throw new UserAlreadyExistsException("User with email = " + userCreateModel.Email + " already exists");
 
-              var userEntity = _mapper.Map<UserEntity>(userCreateModel);
-              var passwordSalt = _hashService.GenerateSalt();
+            var userEntity = _mapper.Map<UserEntity>(userCreateModel);
+            var passwordSalt = _hashService.GenerateSalt();
 
-              userEntity.PasswordHash = _hashService.Hash(userCreateModel.Password, passwordSalt);
-              userEntity.PasswordSalt = passwordSalt;
+            userEntity.PasswordHash = _hashService.Hash(userCreateModel.Password, passwordSalt);
+            userEntity.PasswordSalt = passwordSalt;
 
-              await _userRepository.Insert(userEntity);
+            await _userRepository.Insert(userEntity);
 
-              var validUserModel = _mapper.Map<UserModel>(userEntity);
-              _logger.LogInformation("User created.");
+            var validUserModel = _mapper.Map<UserModel>(userEntity);
+            _logger.LogInformation("User created.");
               
             return validUserModel;
         }
@@ -91,13 +92,13 @@ public class UserManager
             var user = await _userRepository.GetById(id);
             
             if (user == null)
-            {
                 throw new UserNotFoundException("User with id = " + id + " not found");
-            }
+
+            var userModel = _mapper.Map<UserModel>(user);
             
             await _userRepository.Delete(user);
-            
-            return _mapper.Map<UserModel>(user);
+
+            return userModel;
         }
         catch (Exception e)
         {

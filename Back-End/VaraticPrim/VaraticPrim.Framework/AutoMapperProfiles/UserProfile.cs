@@ -20,6 +20,6 @@ public class UserProfile : Profile
         CreateMap<ContactCreateModel, ContactModel>();
         CreateMap<ContactModel, ContactCreateModel>();
         CreateMap<ContactModel, ContactEntity>();
-
+        CreateMap<ContactEntity, ContactCreateModel>();
     }
 }

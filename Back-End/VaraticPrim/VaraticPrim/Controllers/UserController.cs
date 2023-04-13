@@ -78,7 +78,7 @@ public class UserController : ApiBaseController
     }
     
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromQuery] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         try
         {
