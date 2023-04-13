@@ -10,12 +10,16 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<UserCreateModel, UserEntity>();
+        CreateMap<UserCreateModel, UserModel>();
         CreateMap<UserModel, UserEntity>();
         CreateMap<UserEntity, UserModel>();
+        CreateMap<UserEntity, UserCreateModel>();
         CreateMap<ContactCreateModel, ContactEntity>();
         CreateMap<ContactEntity, ContactCreateModel>();
         CreateMap<ContactEntity, ContactModel>();
         CreateMap<ContactCreateModel, ContactModel>();
         CreateMap<ContactModel, ContactCreateModel>();
+        CreateMap<ContactModel, ContactEntity>();
+
     }
 }

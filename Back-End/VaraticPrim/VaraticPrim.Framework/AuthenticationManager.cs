@@ -35,7 +35,6 @@ public class AuthenticationManager
     {
         try
         {
-            
             _logger.LogInformation("Start authenticating user");
             var currentUser = await _userRepository.GetByEmail(loginModel.Email);
 

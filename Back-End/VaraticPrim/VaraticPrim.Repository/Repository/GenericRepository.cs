@@ -26,13 +26,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<IEnumerable<T>> GetAll()
         => await _context.Set<T>().ToListAsync();
  
-    public async Task Insert(T entity, bool trigger = true)
+    public async Task<int> Insert(T entity, bool trigger = true)
     {
         entity.CreatedOnUtc = DateTime.UtcNow;
         entity.UpdatedOnUtc = DateTime.UtcNow;
  
         _context.Set<T>().Add(entity);
-        await _context.SaveChangesAsync();
+        var res = await _context.SaveChangesAsync();
+
+        return res;
     }
  
     public async Task InsertRange(IEnumerable<T> entities)
@@ -60,7 +62,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
     }
- 
+
     public async Task DeleteRange(IEnumerable<T> entities)
     {
         _context.Set<T>().RemoveRange(entities);

@@ -12,6 +12,7 @@ public static class Configurator
     {
         serviceCollection.AddAutoMapper(typeof(Configurator));
         serviceCollection.AddScoped<AuthenticationManager>();
+        serviceCollection.AddScoped<UserManager>();
         serviceCollection.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
         serviceCollection.AddScoped<IValidator<UserCreateModel>, UserCreateModelValidator>();
     }

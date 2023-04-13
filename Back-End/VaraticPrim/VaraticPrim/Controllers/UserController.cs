@@ -3,51 +3,55 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Domain.Entity;
+using VaraticPrim.Framework;
+using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Controllers;
 
-[Route("[controller]/[action]/{id?}")]
+[Route("[controller]")]
 public class UserController : ApiBaseController
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IValidator<UserCreateModel> _userValidator;
-    private readonly IMapper _mapper;
     private readonly ILogger<UserController> _logger;
+    private readonly UserManager _userManager;
+    private readonly IMapper _mapper;
     private readonly IAuthenticationAccessor _authenticationAccessor;
-    private readonly IHashService _hashService;
-    
+
     public UserController(
-        IUserRepository userRepository, 
-        IMapper mapper, 
-        IValidator<UserCreateModel> userValidator, 
-        ILogger<UserController> logger, IAuthenticationAccessor authenticationAccessor,
-        IHashService hashService)
+        UserManager userManager,
+        ILogger<UserController> logger, 
+        IMapper mapper,
+        IAuthenticationAccessor authenticationAccessor)
     {
-        _hashService = hashService;
-        _userValidator = userValidator;
-        _logger = logger;
         _authenticationAccessor = authenticationAccessor;
-        _userRepository = userRepository;
         _mapper = mapper;
+        _userManager = userManager;
+        _logger = logger;
     }
     
-    [HttpGet]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        var user = await _userRepository.GetById(id);
-        if (user is null)
+        try
         {
+            await _authenticationAccessor.LoggedIdentity();
+            var model = await _userManager.GetById(id);
+
+            return Ok(model);
         }
-        await _authenticationAccessor.LoggedIdentity();
-        
-        /*
-        _logger.LogInformation("Token: " + token);*/
-        
-        return Ok(user);
+        catch (UserNotFoundException e)
+        {
+            return BadRequest("user_not_found", "User not found");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to get user");
+            throw;
+        }
     }
 
     [AllowAnonymous]
@@ -56,29 +60,56 @@ public class UserController : ApiBaseController
     {
         try
         {
-            _logger.LogInformation("Creating user...");
-            await _userValidator.ValidateAndThrowAsync(userModel);
-            
-            var userEntity = _mapper.Map<UserEntity>(userModel);
-            var passwordSalt = _hashService.GenerateSalt();
-
-            userEntity.PasswordHash = _hashService.Hash(userModel.Password, passwordSalt);
-            userEntity.PasswordSalt = passwordSalt;
-            
-            await _userRepository.Insert(userEntity);
-
-            var validUserModel = _mapper.Map<UserModel>(userEntity);
-            _logger.LogInformation("User created.");
-
-            return Ok(validUserModel);
+            return Ok(await _userManager.Create(userModel));
         }
         catch (ValidationException e)
         {
             return ValidationError(e);
         }
+        catch (UserAlreadyExistsException e)
+        {
+            return BadRequest("user_already_exists", "User already exists");
+        }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to crate user");
+            _logger.LogError(e, "Failed to create user");
+            throw;
+        }
+    }
+    
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete([FromQuery] int id)
+    {
+        try
+        {
+            return Ok(await _userManager.DeleteById(id));
+        }
+        catch (UserNotFoundException e)
+        {
+            return BadRequest("user_not_found", "User not found");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to delete user");
+            throw;
+        }
+    }
+    
+    [AllowAnonymous]
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update([FromBody] UserUpdateModel userModel, [FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _userManager.Update(userModel, id));
+        }
+        catch (UserNotFoundException e)
+        {
+            return BadRequest("user_not_found", "User not found");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to update user");
             throw;
         }
     }
