@@ -72,9 +72,7 @@ public class UserManager
         {
             var userEntity = await _userRepository.GetById(id);
             if (userEntity == null)
-            {
                 throw new UserNotFoundException("User with id = " + id + " not found");
-            }
 
             return _mapper.Map<UserModel>(userEntity);
         }
@@ -113,6 +111,9 @@ public class UserManager
         {
             var userFromDb = await _userRepository.GetById(id);
 
+            if (await _userRepository.EmailExists(user.Email))
+                throw new UserAlreadyExistsException("User with email = " + user.Email + " already exists");
+            
             if (userFromDb == null)
                 throw new UserNotFoundException("User with id = " + id + " not found");
 

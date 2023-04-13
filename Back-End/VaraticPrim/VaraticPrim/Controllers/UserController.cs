@@ -107,6 +107,10 @@ public class UserController : ApiBaseController
         {
             return BadRequest("user_not_found", "User not found");
         }
+        catch (UserAlreadyExistsException e)
+        {
+            return BadRequest("email_already_exists", "Email already exists");
+        }
         catch (Exception e)
         {
             _logger.LogError(e, "Failed to update user");

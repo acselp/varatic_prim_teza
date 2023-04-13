@@ -15,4 +15,13 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     {
         return await Table.FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
     }
+
+    public async Task<bool> EmailExists(string email)
+    {
+        var user = await Table.FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
+        if (user != null)
+            return true;
+        
+        return false;
+    }
 }
