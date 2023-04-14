@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
 using VaraticPrim.Repository.Persistance;
@@ -42,7 +43,7 @@ public class Startup {
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
-        services.AddAutoMapper(typeof(Startup));
+        services.AddFramework();
         services.AddServices();
     }
     

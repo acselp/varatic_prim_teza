@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using VaraticPrim.Repository.Persistance.Configurations;
 
 namespace VaraticPrim.Repository.Persistance;
 

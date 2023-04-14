@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+      <ProjectReference Include="..\VaraticPrim.Framework\VaraticPrim.Framework.csproj" />
       <ProjectReference Include="..\VaraticPrim.JwtAuth\VaraticPrim.JwtAuth.csproj" />
       <ProjectReference Include="..\VaraticPrim.Repository\VaraticPrim.Repository.csproj" />
       <ProjectReference Include="..\VaraticPrim.Service\VaraticPrim.Service.csproj" />
