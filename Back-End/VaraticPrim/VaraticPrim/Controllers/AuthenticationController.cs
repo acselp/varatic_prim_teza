@@ -30,5 +30,9 @@ public class AuthenticationController : ApiBaseController
             return BadRequest("email_password_not_found",
                 "Email or password incorrect");
         }
+        catch (Exception e)
+        {
+            return NotFound("Unknown error occured");
+        }
     }
 }

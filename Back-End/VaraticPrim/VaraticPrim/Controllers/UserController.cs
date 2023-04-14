@@ -38,7 +38,6 @@ public class UserController : ApiBaseController
     {
         try
         {
-            await _authenticationAccessor.LoggedIdentity();
             var model = await _userManager.GetById(id);
 
             return Ok(model);
@@ -49,8 +48,7 @@ public class UserController : ApiBaseController
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to get user");
-            throw;
+            return NotFound("Unknown error occured");
         }
     }
 
@@ -72,8 +70,7 @@ public class UserController : ApiBaseController
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to create user");
-            throw;
+            return NotFound("Unknown error occured");
         }
     }
     
@@ -90,8 +87,7 @@ public class UserController : ApiBaseController
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to delete user");
-            throw;
+            return NotFound("Unknown error occured");
         }
     }
     
@@ -113,8 +109,7 @@ public class UserController : ApiBaseController
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to update user");
-            throw;
+            return NotFound("Unknown error occured");
         }
     }
 }

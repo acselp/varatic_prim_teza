@@ -38,10 +38,15 @@ public class AuthenticationManager
             _logger.LogInformation("Start authenticating user");
             var currentUser = await _userRepository.GetByEmail(loginModel.Email);
 
-            if ((currentUser == null) || currentUser?.PasswordHash != _hashService.Hash(loginModel.Password, currentUser.PasswordSalt)) 
+            if ((currentUser == null) || !_hashService.PasswordHashMatches(currentUser.PasswordHash,
+                    loginModel.Password, currentUser.PasswordSalt))
+            {
+                _logger.LogError("Wrong email or password");
                 throw new EmailOrPasswordNotFoundException("Wrong email or password");
+            }
             
             var userModel = _mapper.Map<UserModel>(currentUser); 
+            
             return _tokenGeneratorService.Generate(userModel);
         }
         catch (Exception e)

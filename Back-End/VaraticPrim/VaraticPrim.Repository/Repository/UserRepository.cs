@@ -18,10 +18,6 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 
     public async Task<bool> EmailExists(string email)
     {
-        var user = await Table.FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
-        if (user != null)
-            return true;
-        
-        return false;
+        return Table.Any(it => it.Email == email.ToLower().Trim());
     }
 }

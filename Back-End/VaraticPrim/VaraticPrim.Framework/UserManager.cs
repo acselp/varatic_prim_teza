@@ -43,8 +43,12 @@ public class UserManager
             await _userValidator.ValidateAndThrowAsync(userCreateModel);
             
             var user = await _userRepository.GetByEmail(userCreateModel.Email);
-            if(user != null)
+
+            if (user != null)
+            {
+                _logger.LogError("User with email = " + userCreateModel.Email + " already exists");
                 throw new UserAlreadyExistsException("User with email = " + userCreateModel.Email + " already exists");
+            }
 
             var userEntity = _mapper.Map<UserEntity>(userCreateModel);
             var passwordSalt = _hashService.GenerateSalt();
@@ -72,7 +76,10 @@ public class UserManager
         {
             var userEntity = await _userRepository.GetById(id);
             if (userEntity == null)
+            {
+                _logger.LogError("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
+            }
 
             return _mapper.Map<UserModel>(userEntity);
         }
@@ -90,7 +97,10 @@ public class UserManager
             var user = await _userRepository.GetById(id);
             
             if (user == null)
+            {
+                _logger.LogError("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
+            }
 
             var userModel = _mapper.Map<UserModel>(user);
             
@@ -113,9 +123,12 @@ public class UserManager
 
             if (await _userRepository.EmailExists(user.Email))
                 throw new UserAlreadyExistsException("User with email = " + user.Email + " already exists");
-            
+
             if (userFromDb == null)
+            {
+                _logger.LogError("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
+            }
 
             userFromDb.Contact = _mapper.Map<ContactEntity>(user.Contact);
             userFromDb.Email = user.Email;

@@ -11,7 +11,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(u => u.Id)
             .UseSequence();
         
-        builder.ToTable("user", schema: "varatic_prim");
+        builder.ToTable("user", schema: "public");
         
         builder.HasOne<ContactEntity>(u => u.Contact)
             .WithMany()

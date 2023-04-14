@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using VaraticPrim.Repository.Persistance.Configurations;
 
 namespace VaraticPrim.Repository.Persistance;
 
@@ -13,5 +14,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        modelBuilder.ApplyUtcDateTimeConverter();
     }
 }

@@ -26,15 +26,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<IEnumerable<T>> GetAll()
         => await _context.Set<T>().ToListAsync();
  
-    public async Task<int> Insert(T entity, bool trigger = true)
+    public async Task Insert(T entity, bool trigger = true)
     {
         entity.CreatedOnUtc = DateTime.UtcNow;
         entity.UpdatedOnUtc = DateTime.UtcNow;
  
         _context.Set<T>().Add(entity);
-        var res = await _context.SaveChangesAsync();
-
-        return res;
+        await _context.SaveChangesAsync();
     }
  
     public async Task InsertRange(IEnumerable<T> entities)
