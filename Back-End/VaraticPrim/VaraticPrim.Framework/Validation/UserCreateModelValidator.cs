@@ -22,7 +22,6 @@ public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
             .MinimumLength(3);
 
         RuleFor(user => user.Contact.Mobile)
-            .NotEmpty()
             .IsMoldovaMobile();
 
         RuleFor(user => user.Contact.Phone)

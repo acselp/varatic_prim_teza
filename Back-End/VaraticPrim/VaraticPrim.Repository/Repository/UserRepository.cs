@@ -11,6 +11,20 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     {
     }
 
+    public new async Task Update(UserEntity entity)
+    {
+        entity.Contact.CreatedOnUtc = DateTime.UtcNow;
+        entity.Contact.UpdatedOnUtc = DateTime.UtcNow;
+        await base.Update(entity);
+    }
+
+    public new async Task Insert(UserEntity entity)
+    {
+        entity.Contact.CreatedOnUtc = DateTime.UtcNow;
+        entity.Contact.UpdatedOnUtc = DateTime.UtcNow;
+        await base.Insert(entity);
+    }
+
     public async Task<UserEntity?> GetByEmail(string email)
     {
         return await Table.FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
@@ -18,6 +32,6 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 
     public async Task<bool> EmailExists(string email)
     {
-        return Table.Any(it => it.Email == email.ToLower().Trim());
+        return await Table.AnyAsync(it => it.Email == email.ToLower().Trim());
     }
 }

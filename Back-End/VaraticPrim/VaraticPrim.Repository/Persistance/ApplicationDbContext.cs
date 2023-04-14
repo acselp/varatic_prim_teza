@@ -14,6 +14,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-        modelBuilder.ApplyUtcDateTimeConverter();
+        // modelBuilder.ApplyUtcDateTimeConverter();
     }
 }

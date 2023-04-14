@@ -9,11 +9,5 @@ public class ContactEntityConfiguration : IEntityTypeConfiguration<ContactEntity
     public void Configure(EntityTypeBuilder<ContactEntity> builder)
     {
         builder.ToTable("contact", schema:"public");
-        
-        builder.Property(c => c.UpdatedOnUtc)
-            .ValueGeneratedOnAddOrUpdate();
-
-        builder.Property(c => c.CreatedOnUtc)
-            .ValueGeneratedOnAdd();
     }
 }
