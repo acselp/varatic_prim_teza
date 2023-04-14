@@ -46,7 +46,7 @@ public class UserManager
 
             if (user != null)
             {
-                _logger.LogError("User with email = " + userCreateModel.Email + " already exists");
+                _logger.LogWarning("User with email = " + userCreateModel.Email + " already exists");
                 throw new UserAlreadyExistsException("User with email = " + userCreateModel.Email + " already exists");
             }
 
@@ -77,7 +77,7 @@ public class UserManager
             var userEntity = await _userRepository.GetById(id);
             if (userEntity == null)
             {
-                _logger.LogError("User with id = " + id + " not found");
+                _logger.LogWarning("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
             }
 
@@ -98,7 +98,7 @@ public class UserManager
             
             if (user == null)
             {
-                _logger.LogError("User with id = " + id + " not found");
+                _logger.LogWarning("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
             }
 
@@ -126,7 +126,7 @@ public class UserManager
 
             if (userFromDb == null)
             {
-                _logger.LogError("User with id = " + id + " not found");
+                _logger.LogWarning("User with id = " + id + " not found");
                 throw new UserNotFoundException("User with id = " + id + " not found");
             }
 

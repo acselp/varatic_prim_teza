@@ -41,7 +41,7 @@ public class AuthenticationManager
             if ((currentUser == null) || !_hashService.PasswordHashMatches(currentUser.PasswordHash,
                     loginModel.Password, currentUser.PasswordSalt))
             {
-                _logger.LogError("Wrong email or password");
+                _logger.LogWarning("Wrong email or password");
                 throw new EmailOrPasswordNotFoundException("Wrong email or password");
             }
             
