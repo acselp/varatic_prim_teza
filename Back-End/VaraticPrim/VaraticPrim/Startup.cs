@@ -59,6 +59,5 @@ public class Startup {
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
-        // AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 }

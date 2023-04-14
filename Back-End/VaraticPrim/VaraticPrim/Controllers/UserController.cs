@@ -46,10 +46,6 @@ public class UserController : ApiBaseController
         {
             return BadRequest("user_not_found", "User not found");
         }
-        catch (Exception e)
-        {
-            return NotFound("Unknown error occured");
-        }
     }
 
     [AllowAnonymous]
@@ -68,10 +64,6 @@ public class UserController : ApiBaseController
         {
             return BadRequest("user_already_exists", "User already exists");
         }
-        catch (Exception e)
-        {
-            return NotFound("Unknown error occured");
-        }
     }
     
     [HttpDelete("{id:int}")]
@@ -84,10 +76,6 @@ public class UserController : ApiBaseController
         catch (UserNotFoundException e)
         {
             return BadRequest("user_not_found", "User not found");
-        }
-        catch (Exception e)
-        {
-            return NotFound("Unknown error occured");
         }
     }
     
@@ -106,10 +94,6 @@ public class UserController : ApiBaseController
         catch (UserAlreadyExistsException e)
         {
             return BadRequest("email_already_exists", "Email already exists");
-        }
-        catch (Exception e)
-        {
-            return NotFound("Unknown error occured");
         }
     }
 }
