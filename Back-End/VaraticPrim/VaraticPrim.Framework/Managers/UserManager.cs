@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Exceptions;
-using VaraticPrim.Framework.Models.ContactModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
 
-namespace VaraticPrim.Framework;
+namespace VaraticPrim.Framework.Managers;
 
 public class UserManager
 {
@@ -17,20 +15,18 @@ public class UserManager
     private readonly IValidator<UserCreateModel> _userValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserManager> _logger;
-    private readonly IAuthenticationAccessor _authenticationAccessor;
     private readonly IHashService _hashService;
     
     public UserManager(
         IUserRepository userRepository, 
         IMapper mapper, 
         IValidator<UserCreateModel> userValidator, 
-        ILogger<UserManager> logger, IAuthenticationAccessor authenticationAccessor,
+        ILogger<UserManager> logger, 
         IHashService hashService)
     {
         _hashService = hashService;
         _userValidator = userValidator;
         _logger = logger;
-        _authenticationAccessor = authenticationAccessor;
         _userRepository = userRepository;
         _mapper = mapper;
     }

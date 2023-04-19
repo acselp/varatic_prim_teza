@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework;
 using VaraticPrim.Framework.Exceptions;
+using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Service.Interfaces;
 

@@ -40,6 +40,7 @@ public class Startup {
         
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();

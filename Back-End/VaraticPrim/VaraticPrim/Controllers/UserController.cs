@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using VaraticPrim.Domain.Entity;
-using VaraticPrim.Framework;
 using VaraticPrim.Framework.Exceptions;
+using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.UserModels;
-using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Controllers;
