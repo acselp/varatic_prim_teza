@@ -2,7 +2,7 @@
 
 namespace VaraticPrim.Framework.Models.CounterModels;
 
-public class LocationCreateModel
+public class CounterCreateModel
 {
     public string BarCode { get; set; }
     public int Value { get; set; }
