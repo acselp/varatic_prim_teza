@@ -16,6 +16,7 @@ public static class Configurator
         serviceCollection.AddScoped<AuthenticationManager>();
         serviceCollection.AddScoped<UserManager>();
         serviceCollection.AddScoped<LocationManager>();
+        serviceCollection.AddScoped<CounterManager>();
         serviceCollection.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
         serviceCollection.AddValidatorsFromAssemblyContaining<UserCreateModelValidator>();
     }
