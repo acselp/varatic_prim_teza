@@ -50,7 +50,8 @@ public class LocationController : ApiBaseController
     {
         try
         {
-            return Ok(await _locationManager.DeleteById(id));
+            await _locationManager.DeleteById(id);
+            return Ok();
         }
         catch (LocationNotFoundException e)
         {

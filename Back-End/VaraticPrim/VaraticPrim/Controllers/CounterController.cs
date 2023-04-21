@@ -51,7 +51,8 @@ public class CounterController : ApiBaseController
     {
         try
         {
-            return Ok(await _counterManager.DeleteById(id));
+            await _counterManager.DeleteById(id);
+            return Ok();
         }
         catch (CounterNotFoundException e)
         {

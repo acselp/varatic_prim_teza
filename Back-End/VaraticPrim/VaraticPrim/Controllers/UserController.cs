@@ -67,7 +67,8 @@ public class UserController : ApiBaseController
     {
         try
         {
-            return Ok(await _userManager.DeleteById(id));
+            await _userManager.DeleteById(id);
+            return Ok();
         }
         catch (UserNotFoundException e)
         {
