@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Exceptions;
@@ -15,13 +16,19 @@ public class CounterManager
     private readonly ICounterRepository _counterRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<CounterManager> _logger;
+    private readonly IValidator<CounterCreateModel> _counterCreateValidator;
+    private readonly IValidator<CounterUpdateModel> _counterUpdateValidator;
 
     public CounterManager(
+        IValidator<CounterCreateModel> counterCreateValidator,
+        IValidator<CounterUpdateModel> counterUpdateValidator,
         ILocationRepository locationRepository,
         ICounterRepository counterRepository,
         IMapper mapper,
         ILogger<CounterManager> logger)
     {
+        _counterUpdateValidator = counterUpdateValidator;
+        _counterCreateValidator = counterCreateValidator;
         _locationRepository = locationRepository;
         _logger = logger;
         _counterRepository = counterRepository;
@@ -32,17 +39,25 @@ public class CounterManager
     {
         try
         {
-            _logger.LogInformation("Creating counter...");
+            _logger.LogInformation("Creating counter");
             var counterEntity = _mapper.Map<CounterEntity>(counter);
+            await _counterCreateValidator.ValidateAndThrowAsync(counter);
+
+            if (await _counterRepository.CounterExists(counter.BarCode))
+            {
+                _logger.LogWarning("Counter with barcode = " + counter.BarCode + " already exists.");
+                throw new CounterAlreadyExistsException("Counter with barcode = " + counter.BarCode + " already exists.");
+            }
+            
             await _counterRepository.Insert(counterEntity);
 
             var location = await _locationRepository.GetById(counter.LocationId);
             
-            var validCounterModel = _mapper.Map<CounterModel>(counterEntity);
-            validCounterModel.Location = _mapper.Map<LocationModel>(location);
+            var counterModel = _mapper.Map<CounterModel>(counterEntity);
+            counterModel.Location = _mapper.Map<LocationModel>(location);
             _logger.LogInformation("Counter created.");
               
-            return validCounterModel;
+            return counterModel;
         }
         catch (Exception e)
         {
@@ -58,7 +73,7 @@ public class CounterManager
             var counterEntity = await _counterRepository.GetById(id);
             if (counterEntity == null)
             {
-                _logger.LogWarning("Counter with id = " + id + " not found");
+                _logger.LogWarning("Counter with id = {id} not found", id);
                 throw new LocationNotFoundException("Counter with id = " + id + " not found");
             }
 
@@ -79,7 +94,7 @@ public class CounterManager
             
             if (counter == null)
             {
-                _logger.LogWarning("Counter with id = " + id + " not found");
+                _logger.LogWarning("Counter with id = {id} not found", id);
                 throw new CounterNotFoundException("Counter with id = " + id + " not found");
             }
     
@@ -101,10 +116,11 @@ public class CounterManager
          try
          {
              var counterFromDb = await _counterRepository.GetById(id);
+             await _counterUpdateValidator.ValidateAndThrowAsync(counter);
              
              if (counterFromDb == null)
              {
-                 _logger.LogWarning("Counter with id = " + id + " not found");
+                 _logger.LogWarning("Counter with id = {id} not found", id);
                  throw new CounterNotFoundException("Counter with id = " + id + " not found");
              }
     

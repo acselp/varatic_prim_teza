@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Exceptions;
@@ -14,6 +15,8 @@ public class LocationManager
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<LocationManager> _logger;
+    private readonly IValidator<LocationCreateModel> _locationCreateValidator;
+    private readonly IValidator<LocationUpdateModel> _locationUpdateValidator;
 
     public LocationManager(
         IUserRepository userRepository,
@@ -27,22 +30,23 @@ public class LocationManager
         _mapper = mapper;
     }
 
-    public async Task<LocationModel> Create(LocationCreateModel location)
+    public async Task<LocationModel> Create(LocationCreateModel locationCreateModel)
     {
         try
         {
             _logger.LogInformation("Creating location...");
 
-            var locationEntity = _mapper.Map<LocationEntity>(location);
+            var locationEntity = _mapper.Map<LocationEntity>(locationCreateModel);
+            await _locationCreateValidator.ValidateAndThrowAsync(locationCreateModel);
 
             await _locationRepository.Insert(locationEntity);
 
-            var validLocationModel = _mapper.Map<LocationModel>(locationEntity);
+            var locationModel = _mapper.Map<LocationModel>(locationEntity);
             var userEntity = await _userRepository.GetById(locationEntity.UserId);
-            validLocationModel.User = _mapper.Map<UserModel>(userEntity);
+            locationModel.User = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("Location created.");
               
-            return validLocationModel;
+            return locationModel;
         }
         catch (Exception e)
         {
@@ -96,11 +100,12 @@ public class LocationManager
         }
     }
     
-    public async Task<LocationModel> Update(LocationUpdateModel location, int id)
+    public async Task<LocationModel> Update(LocationUpdateModel locationUpdateModel, int id)
     {
         try
         {
             var locationFromDb = await _locationRepository.GetById(id);
+            await _locationUpdateValidator.ValidateAndThrowAsync(locationUpdateModel);
             
             if (locationFromDb == null)
             {
@@ -108,7 +113,7 @@ public class LocationManager
                 throw new LocationNotFoundException("Location with id = " + id + " not found");
             }
 
-            var locationEntity = _mapper.Map<LocationEntity>(location);
+            var locationEntity = _mapper.Map<LocationEntity>(locationUpdateModel);
 
             await _locationRepository.Update(locationEntity);
 

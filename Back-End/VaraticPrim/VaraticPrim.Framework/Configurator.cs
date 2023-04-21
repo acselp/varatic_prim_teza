@@ -18,6 +18,15 @@ public static class Configurator
         serviceCollection.AddScoped<LocationManager>();
         serviceCollection.AddScoped<CounterManager>();
         serviceCollection.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+        
+        //Validators
         serviceCollection.AddValidatorsFromAssemblyContaining<UserCreateModelValidator>();
+        serviceCollection.AddValidatorsFromAssemblyContaining<UserUpdateModelValidator>();
+        
+        serviceCollection.AddValidatorsFromAssemblyContaining<LocationCreateModelValidator>();
+        serviceCollection.AddValidatorsFromAssemblyContaining<LocationUpdateModelValidator>();
+        
+        serviceCollection.AddValidatorsFromAssemblyContaining<CounterCreateModelValidator>();
+        serviceCollection.AddValidatorsFromAssemblyContaining<CounterUpdateModelValidator>();
     }
 }

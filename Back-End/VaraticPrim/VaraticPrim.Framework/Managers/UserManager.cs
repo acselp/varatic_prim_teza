@@ -12,7 +12,8 @@ namespace VaraticPrim.Framework.Managers;
 public class UserManager
 {
     private readonly IUserRepository _userRepository;
-    private readonly IValidator<UserCreateModel> _userValidator;
+    private readonly IValidator<UserCreateModel> _userCreateValidator;
+    private readonly IValidator<UserUpdateModel> _userUpdateValidator;
     private readonly IMapper _mapper;
     private readonly ILogger<UserManager> _logger;
     private readonly IHashService _hashService;
@@ -20,12 +21,14 @@ public class UserManager
     public UserManager(
         IUserRepository userRepository, 
         IMapper mapper, 
-        IValidator<UserCreateModel> userValidator, 
+        IValidator<UserCreateModel> userCreateValidator, 
+        IValidator<UserUpdateModel> userUpdateValidator,
         ILogger<UserManager> logger, 
         IHashService hashService)
     {
         _hashService = hashService;
-        _userValidator = userValidator;
+        _userCreateValidator = userCreateValidator;
+        _userUpdateValidator = userUpdateValidator;
         _logger = logger;
         _userRepository = userRepository;
         _mapper = mapper;
@@ -36,11 +39,9 @@ public class UserManager
         try
         {
             _logger.LogInformation("Creating user...");
-            await _userValidator.ValidateAndThrowAsync(userCreateModel);
+            await _userCreateValidator.ValidateAndThrowAsync(userCreateModel);
             
-            var user = await _userRepository.GetByEmail(userCreateModel.Email);
-
-            if (user != null)
+            if (await _userRepository.EmailExists(userCreateModel.Email))
             {
                 _logger.LogWarning("User with email = " + userCreateModel.Email + " already exists");
                 throw new UserAlreadyExistsException("User with email = " + userCreateModel.Email + " already exists");
@@ -54,10 +55,10 @@ public class UserManager
 
             await _userRepository.Insert(userEntity);
 
-            var validUserModel = _mapper.Map<UserModel>(userEntity);
+            var userModel = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("User created.");
               
-            return validUserModel;
+            return userModel;
         }
         catch (Exception e)
         {
@@ -111,14 +112,15 @@ public class UserManager
         }
     }
     
-    public async Task<UserModel> Update(UserUpdateModel user, int id)
+    public async Task<UserModel> Update(UserUpdateModel userUpdateModel, int id)
     {
         try
         {
             var userFromDb = await _userRepository.GetById(id);
+            await _userUpdateValidator.ValidateAndThrowAsync(userUpdateModel);
 
-            if (await _userRepository.EmailExists(user.Email))
-                throw new UserAlreadyExistsException("User with email = " + user.Email + " already exists");
+            if (await _userRepository.EmailExists(userUpdateModel.Email))
+                throw new UserAlreadyExistsException("User with email = " + userUpdateModel.Email + " already exists");
 
             if (userFromDb == null)
             {
@@ -126,8 +128,8 @@ public class UserManager
                 throw new UserNotFoundException("User with id = " + id + " not found");
             }
 
-            userFromDb.Contact = _mapper.Map<ContactEntity>(user.Contact);
-            userFromDb.Email = user.Email;
+            userFromDb.Contact = _mapper.Map<ContactEntity>(userUpdateModel.Contact);
+            userFromDb.Email = userUpdateModel.Email;
             
             await _userRepository.Update(userFromDb);
 
