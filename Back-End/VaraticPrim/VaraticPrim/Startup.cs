@@ -8,6 +8,8 @@ using VaraticPrim.MvcExtentions;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service;
+using VaraticPrim.Service.Interfaces;
+using VaraticPrim.Service.Migrations;
 
 namespace VaraticPrim;
 
@@ -47,6 +49,7 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
+        services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
