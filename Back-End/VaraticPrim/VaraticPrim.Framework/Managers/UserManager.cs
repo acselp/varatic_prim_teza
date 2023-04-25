@@ -43,8 +43,8 @@ public class UserManager
             
             if (await _userRepository.EmailExists(userCreateModel.Email))
             {
-                _logger.LogWarning("User with email = " + userCreateModel.Email + " already exists");
-                throw new UserAlreadyExistsException("User with email = " + userCreateModel.Email + " already exists");
+                _logger.LogWarning($"User with email = {userCreateModel.Email} already exists");
+                throw new UserAlreadyExistsException($"User with email = {userCreateModel.Email} already exists");
             }
 
             var userEntity = _mapper.Map<UserEntity>(userCreateModel);
@@ -74,8 +74,8 @@ public class UserManager
             var userEntity = await _userRepository.GetById(id);
             if (userEntity == null)
             {
-                _logger.LogWarning("User with id = " + id + " not found");
-                throw new UserNotFoundException("User with id = " + id + " not found");
+                _logger.LogWarning($"User with id = {id} not found");
+                throw new UserNotFoundException($"User with id = {id} not found");
             }
 
             return _mapper.Map<UserModel>(userEntity);
@@ -95,8 +95,8 @@ public class UserManager
             
             if (user == null)
             {
-                _logger.LogWarning("User with id = " + id + " not found");
-                throw new UserNotFoundException("User with id = " + id + " not found");
+                _logger.LogWarning($"User with id = {id} not found");
+                throw new UserNotFoundException($"User with id = {id} not found");
             }
 
             var userModel = _mapper.Map<UserModel>(user);
@@ -120,12 +120,12 @@ public class UserManager
             await _userUpdateValidator.ValidateAndThrowAsync(userUpdateModel);
 
             if (await _userRepository.EmailExists(userUpdateModel.Email))
-                throw new UserAlreadyExistsException("User with email = " + userUpdateModel.Email + " already exists");
+                throw new UserAlreadyExistsException($"User with email = {userUpdateModel.Email} already exists");
 
             if (userFromDb == null)
             {
-                _logger.LogWarning("User with id = " + id + " not found");
-                throw new UserNotFoundException("User with id = " + id + " not found");
+                _logger.LogWarning($"User with id = {id} not found");
+                throw new UserNotFoundException($"User with id = {id} not found");
             }
 
             userFromDb.Contact = _mapper.Map<ContactEntity>(userUpdateModel.Contact);

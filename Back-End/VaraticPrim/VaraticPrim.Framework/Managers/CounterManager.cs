@@ -45,8 +45,8 @@ public class CounterManager
 
             if (await _counterRepository.CounterExists(counter.BarCode))
             {
-                _logger.LogWarning("Counter with barcode = " + counter.BarCode + " already exists.");
-                throw new CounterAlreadyExistsException("Counter with barcode = " + counter.BarCode + " already exists.");
+                _logger.LogWarning($"Counter with barcode = {counter.BarCode} already exists.");
+                throw new CounterAlreadyExistsException($"Counter with barcode = {counter.BarCode} already exists.");
             }
             
             await _counterRepository.Insert(counterEntity);
@@ -73,8 +73,8 @@ public class CounterManager
             var counterEntity = await _counterRepository.GetById(id);
             if (counterEntity == null)
             {
-                _logger.LogWarning("Counter with id = {id} not found", id);
-                throw new LocationNotFoundException("Counter with id = " + id + " not found");
+                _logger.LogWarning($"Counter with id = {id} not found", id);
+                throw new LocationNotFoundException($"Counter with id = {id} not found");
             }
 
             return _mapper.Map<CounterModel>(counterEntity);
@@ -94,8 +94,8 @@ public class CounterManager
             
             if (counter == null)
             {
-                _logger.LogWarning("Counter with id = {id} not found", id);
-                throw new CounterNotFoundException("Counter with id = " + id + " not found");
+                _logger.LogWarning($"Counter with id = {id} not found", id);
+                throw new CounterNotFoundException($"Counter with id = {id} not found");
             }
     
             var counterModel = _mapper.Map<CounterModel>(counter);
@@ -120,8 +120,8 @@ public class CounterManager
              
              if (counterFromDb == null)
              {
-                 _logger.LogWarning("Counter with id = {id} not found", id);
-                 throw new CounterNotFoundException("Counter with id = " + id + " not found");
+                 _logger.LogWarning($"Counter with id = {id} not found", id);
+                 throw new CounterNotFoundException($"Counter with id = {id} not found");
              }
     
              var counterEntity = _mapper.Map<CounterEntity>(counter);

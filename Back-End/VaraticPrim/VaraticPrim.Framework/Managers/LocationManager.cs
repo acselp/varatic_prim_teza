@@ -43,6 +43,7 @@ public class LocationManager
 
             var locationModel = _mapper.Map<LocationModel>(locationEntity);
             var userEntity = await _userRepository.GetById(locationEntity.UserId);
+            
             locationModel.User = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("Location created.");
               
@@ -62,8 +63,8 @@ public class LocationManager
             var locationEntity = await _locationRepository.GetById(id);
             if (locationEntity == null)
             {
-                _logger.LogWarning("Location with id = " + id + " not found");
-                throw new LocationNotFoundException("Location with id = " + id + " not found");
+                _logger.LogWarning($"Location with id = {id} not found");
+                throw new LocationNotFoundException($"Location with id = {id} not found");
             }
 
             return _mapper.Map<LocationModel>(locationEntity);
@@ -75,7 +76,7 @@ public class LocationManager
         }
     }
     
-    public async Task<LocationModel> DeleteById(int id)
+    public async Task DeleteById(int id)
     {
         try
         {
@@ -83,15 +84,11 @@ public class LocationManager
             
             if (location == null)
             {
-                _logger.LogWarning("Location with id = " + id + " not found");
-                throw new LocationNotFoundException("Location with id = " + id + " not found");
+                _logger.LogWarning($"Location with id = {id} not found");
+                throw new LocationNotFoundException($"Location with id = {id} not found");
             }
-
-            var locationModel = _mapper.Map<LocationModel>(location);
             
             await _locationRepository.Delete(location);
-
-            return locationModel;
         }
         catch (Exception e)
         {
@@ -109,8 +106,8 @@ public class LocationManager
             
             if (locationFromDb == null)
             {
-                _logger.LogWarning("Location with id = " + id + " not found");
-                throw new LocationNotFoundException("Location with id = " + id + " not found");
+                _logger.LogWarning($"Location with id = {id} not found");
+                throw new LocationNotFoundException($"Location with id = {id} not found");
             }
 
             var locationEntity = _mapper.Map<LocationEntity>(locationUpdateModel);
