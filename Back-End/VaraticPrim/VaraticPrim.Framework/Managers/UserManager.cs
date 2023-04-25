@@ -116,11 +116,8 @@ public class UserManager
     {
         try
         {
-            var userFromDb = await _userRepository.GetById(id);
             await _userUpdateValidator.ValidateAndThrowAsync(userUpdateModel);
-
-            if (await _userRepository.EmailExists(userUpdateModel.Email))
-                throw new UserAlreadyExistsException($"User with email = {userUpdateModel.Email} already exists");
+            var userFromDb = await _userRepository.GetById(id);
 
             if (userFromDb == null)
             {
@@ -129,7 +126,6 @@ public class UserManager
             }
 
             userFromDb.Contact = _mapper.Map<ContactEntity>(userUpdateModel.Contact);
-            userFromDb.Email = userUpdateModel.Email;
             
             await _userRepository.Update(userFromDb);
 

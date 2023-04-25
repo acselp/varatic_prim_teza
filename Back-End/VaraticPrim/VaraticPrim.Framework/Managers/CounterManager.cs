@@ -40,13 +40,14 @@ public class CounterManager
         try
         {
             _logger.LogInformation("Creating counter");
-            var counterEntity = _mapper.Map<CounterEntity>(counter);
             await _counterCreateValidator.ValidateAndThrowAsync(counter);
+            
+            var counterEntity = _mapper.Map<CounterEntity>(counter);
 
-            if (await _counterRepository.CounterExists(counter.BarCode))
+            if (await _counterRepository.CounterExists(counter.Barcode))
             {
-                _logger.LogWarning($"Counter with barcode = {counter.BarCode} already exists.");
-                throw new CounterAlreadyExistsException($"Counter with barcode = {counter.BarCode} already exists.");
+                _logger.LogWarning($"Counter with barcode = {counter.Barcode} already exists.");
+                throw new CounterAlreadyExistsException($"Counter with barcode = {counter.Barcode} already exists.");
             }
             
             await _counterRepository.Insert(counterEntity);

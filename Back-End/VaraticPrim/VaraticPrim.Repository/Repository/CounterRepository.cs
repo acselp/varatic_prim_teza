@@ -12,6 +12,6 @@ public class CounterRepository : GenericRepository<CounterEntity>, ICounterRepos
     
     public async Task<bool> CounterExists(string barCode)
     {
-        return await Table.AnyAsync(it => it.BarCode == barCode.ToLower().Trim());
+        return await Table.AnyAsync(it => it.Barcode == barCode.ToLower().Trim());
     }
 }

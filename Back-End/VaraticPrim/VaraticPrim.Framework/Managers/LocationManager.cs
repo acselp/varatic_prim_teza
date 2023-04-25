@@ -36,8 +36,8 @@ public class LocationManager
         {
             _logger.LogInformation("Creating location...");
 
-            var locationEntity = _mapper.Map<LocationEntity>(locationCreateModel);
             await _locationCreateValidator.ValidateAndThrowAsync(locationCreateModel);
+            var locationEntity = _mapper.Map<LocationEntity>(locationCreateModel);
 
             await _locationRepository.Insert(locationEntity);
 
