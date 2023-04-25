@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using VaraticPrim.Framework.AutoMapperProfiles;
+using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Framework.Validation;
@@ -11,9 +13,8 @@ public static class Configurator
     public static void AddFramework(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddAutoMapper(typeof(Configurator));
-        serviceCollection.AddScoped<AuthenticationManager>();
-        serviceCollection.AddScoped<UserManager>();
         serviceCollection.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
-        serviceCollection.AddValidatorsFromAssemblyContaining<UserCreateModelValidator>();
+        serviceCollection.AddValidation();
+        serviceCollection.AddManagers();
     }
 }

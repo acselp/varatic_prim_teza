@@ -8,7 +8,7 @@ using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
 
-namespace VaraticPrim.Framework;
+namespace VaraticPrim.Framework.Managers;
 
 public class AuthenticationManager
 {
