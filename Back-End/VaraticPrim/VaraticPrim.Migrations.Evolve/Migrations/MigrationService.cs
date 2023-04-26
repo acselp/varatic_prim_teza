@@ -1,21 +1,19 @@
 ﻿using System.Reflection;
-using EvolveDb;
-using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using Npgsql;
-using VaraticPrim.Service.Interfaces;
 
-namespace VaraticPrim.Service.Migrations;
+namespace Infeastructure.Migrations.Evolve;
 
 public class MigrationService:IMigrationService
 {
-    private readonly Evolve _evolve;
-    
+    private readonly EvolveDb.Evolve _evolve;
+
     public MigrationService(string connectionString)
     {
         var cnx = new NpgsqlConnection(connectionString);
         var location = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-        _evolve = new Evolve(cnx)
+        _evolve = new EvolveDb.Evolve(cnx)
         {
             Locations = new[]{location},
             IsEraseDisabled = true,

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using Infeastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +8,6 @@ using VaraticPrim.MvcExtentions;
 using VaraticPrim.Repository.Persistance;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service;
-using VaraticPrim.Service.Interfaces;
-using VaraticPrim.Service.Migrations;
 
 namespace VaraticPrim;
 

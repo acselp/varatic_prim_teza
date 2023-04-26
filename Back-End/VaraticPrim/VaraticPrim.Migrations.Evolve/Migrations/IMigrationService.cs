@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Service.Interfaces;
+﻿namespace Infeastructure.Migrations.Evolve;
 
 public interface IMigrationService
 {
