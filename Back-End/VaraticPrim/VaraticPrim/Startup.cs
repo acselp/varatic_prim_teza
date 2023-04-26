@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using Infeastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +47,7 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
+        services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)

@@ -13,6 +13,5 @@ public static class Configurator
 
         serviceCollection.AddScoped<IAuthenticationAccessor, HttpAuthenticationAccessor>();
         serviceCollection.AddScoped<IHashService, HashService>();
-
     }
 }

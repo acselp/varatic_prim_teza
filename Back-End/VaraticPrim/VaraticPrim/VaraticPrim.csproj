@@ -7,18 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
-      <ProjectReference Include="..\VaraticPrim.Framework\VaraticPrim.Framework.csproj" />
-      <ProjectReference Include="..\VaraticPrim.JwtAuth\VaraticPrim.JwtAuth.csproj" />
-      <ProjectReference Include="..\VaraticPrim.Repository\VaraticPrim.Repository.csproj" />
-      <ProjectReference Include="..\VaraticPrim.Service\VaraticPrim.Service.csproj" />
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-      <PackageReference Include="EFCore.NamingConventions" Version="7.0.2" />
-      <PackageReference Include="FluentValidation" Version="11.5.1" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0-preview.2.23128.3" />
-      <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+        <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Framework\VaraticPrim.Framework.csproj" />
+        <ProjectReference Include="..\VaraticPrim.JwtAuth\VaraticPrim.JwtAuth.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Migrations.Evolve\VaraticPrim.Migrations.Evolve.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Repository\VaraticPrim.Repository.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Service\VaraticPrim.Service.csproj" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="EFCore.NamingConventions" Version="7.0.2" />
+        <PackageReference Include="FluentValidation" Version="11.5.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0-preview.2.23128.3" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     </ItemGroup>
 
 </Project>
