@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
+using VaraticPrim.Framework.Models;
 using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Service.Interfaces;
 
@@ -31,5 +33,25 @@ public class AuthenticationController : ApiBaseController
             return BadRequest("email_password_not_found",
                 "Email or password incorrect");
         }
-    }
+    } 
+    
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> Refresh([FromBody] AccessTokenModel tokenModel)
+    {
+        try
+        {
+            var model = await _authenticationManager.RefreshToken(tokenModel);
+            return Ok(model);
+        }
+        catch (InvalidAccessTokenOrRefreshTokenException)
+        {
+            return BadRequest("invalid_token",
+                "Invalid token");
+        }
+            catch (EmailOrPasswordNotFoundException)
+        {
+            return BadRequest("email_password_not_found",
+                "Email or password incorrect");
+        }
+    } 
 }

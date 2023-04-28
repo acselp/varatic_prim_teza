@@ -42,6 +42,7 @@ public class Startup {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ICounterRepository, CounterRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
@@ -52,13 +53,13 @@ public class Startup {
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
     {
-        if (!env.IsDevelopment()) 
+        if (!env.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        
+
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
