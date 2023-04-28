@@ -32,14 +32,14 @@ public class AuthenticationController : ApiBaseController
         }
     } 
     
+    [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> Refresh([FromBody] AccessTokenModel tokenModel)
+    public async Task<IActionResult> LoginByRefreshToken([FromBody] LoginByRefreshTokenModel tokenModel)
     {
         try
         {
-            // var model = await _authenticationManager.RefreshToken(tokenModel);
-            // return Ok(model);
-            return Ok();
+            var model = await _authenticationManager.LoginByRefreshToken(tokenModel.RefreshToken);
+            return Ok(model);
         }
         catch (InvalidAccessTokenOrRefreshTokenException)
         {

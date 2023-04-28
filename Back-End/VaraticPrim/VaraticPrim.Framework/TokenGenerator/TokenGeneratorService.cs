@@ -59,7 +59,7 @@ public class TokenGeneratorService : ITokenGeneratorService
         return new RefreshToken
         {
             Token   = Convert.ToBase64String(randomNumber),
-            Expires = DateTime.UtcNow.AddMinutes(_options.Value.RefreshTokenExpirationTimeDays),
+            Expires = DateTime.UtcNow.AddMinutes(_options.Value.RefreshTokenExpirationTimeMin),
         };
     }
 }

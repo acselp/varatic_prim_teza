@@ -1,14 +1,7 @@
-﻿using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.Exceptions;
-using VaraticPrim.Framework.Models;
 using VaraticPrim.Framework.Models.LoginModel;
-using VaraticPrim.Framework.Models.TokenModels;
-using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
@@ -45,12 +38,7 @@ public class AuthenticationManager
             _logger.LogInformation("Start authenticating user");
             var currentUser = await _userRepository.GetByEmail(loginModel.Email);
 
-            var passwordSalt = _hashService.GenerateSalt();
-            currentUser.PasswordHash = _hashService.Hash(loginModel.Password, passwordSalt);
-            currentUser.PasswordSalt = passwordSalt;
-            await _userRepository.Update(currentUser);
-            
-            if ((currentUser == null) || !_hashService.PasswordHashMatches(currentUser.PasswordHash,
+            if (currentUser == null || !_hashService.PasswordHashMatches(currentUser.PasswordHash,
                     loginModel.Password, currentUser.PasswordSalt))
             {
                 _logger.LogWarning("Wrong email or password");
@@ -82,5 +70,41 @@ public class AuthenticationManager
             _logger.LogError(e, "Failed to login");
             throw;
         }
+    }
+
+    public async Task<LoginResultModel> LoginByRefreshToken(string token)
+    {
+        var currentUser  = await GetUserByRefreshToken(token);
+        var accessToken  = _tokenGeneratorService.GenerateAccessToken(currentUser.Id);
+        var refreshToken = _tokenGeneratorService.GenerateRefreshToken();
+         
+        await _refreshRepository.Insert(
+            new RefreshTokenEntity
+            {
+                RefreshToken   = refreshToken.Token,
+                UserId         = currentUser.Id,
+                ExpirationTime = refreshToken.Expires
+            });
+
+        return new LoginResultModel
+        {
+            AccessToken                = accessToken.AccessToken,
+            ExpiresIn                  = accessToken.ExpirationTime,
+            TokenType                  = accessToken.TokenType,
+            RefreshToken               = refreshToken.Token,
+            RefreshTokenExpirationTime = refreshToken.Expires
+        };
+    }
+    
+    private async Task<UserEntity> GetUserByRefreshToken(string token)
+    {
+        var entity = await _refreshRepository.GetUserByToken(token);
+
+        if (entity == null || entity.IsExpired)
+        {
+            throw new InvalidAccessTokenOrRefreshTokenException();
+        }
+
+        return entity.UserEntity ?? throw new InvalidAccessTokenOrRefreshTokenException();
     }
 }

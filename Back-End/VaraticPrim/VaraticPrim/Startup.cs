@@ -22,6 +22,8 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        
         services.Configure<JwtConfiguration>(Config.GetSection("Jwt"));
         services.AddMvc(options =>
             {

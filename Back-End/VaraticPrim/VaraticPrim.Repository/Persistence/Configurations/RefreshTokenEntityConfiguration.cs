@@ -13,5 +13,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
         builder.HasOne<UserEntity>(e => e.UserEntity)
             .WithMany()
             .HasForeignKey(l => l.UserId);
+
+        builder.Ignore(entity => entity.IsExpired);
     }
 }

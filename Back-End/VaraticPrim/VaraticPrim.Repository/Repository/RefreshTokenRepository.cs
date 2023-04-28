@@ -10,4 +10,8 @@ public class RefreshTokenRepository : GenericRepository<RefreshTokenEntity>, IRe
     {
     }
 
+    public async Task<RefreshTokenEntity?> GetUserByToken(string token)
+    {
+        return await Table.FirstOrDefaultAsync(u => u.RefreshToken.Equals(token));
+    }
 }

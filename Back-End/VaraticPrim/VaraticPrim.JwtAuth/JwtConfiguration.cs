@@ -6,5 +6,5 @@ public class JwtConfiguration
     public string Issuer { get; set; }
     public string Audience { get; set; }
     public int AccessTokenExpirationTimeMin { get; set; }
-    public int RefreshTokenExpirationTimeDays { get; set; }
+    public int RefreshTokenExpirationTimeMin { get; set; }
 }

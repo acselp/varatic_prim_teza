@@ -6,4 +6,6 @@ public class RefreshTokenEntity : BaseEntity
     public virtual UserEntity UserEntity     { get; set; }
     public         string     RefreshToken   { get; set; }
     public         DateTime   ExpirationTime { get; set; }
+
+    public bool IsExpired => ExpirationTime < DateTime.UtcNow;
 }
