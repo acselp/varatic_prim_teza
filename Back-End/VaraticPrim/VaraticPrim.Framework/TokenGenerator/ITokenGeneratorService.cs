@@ -1,12 +1,9 @@
-﻿using System.Security.Claims;
-using VaraticPrim.Framework.Models;
-using VaraticPrim.Framework.Models.UserModels;
+﻿using VaraticPrim.Framework.Models.TokenModels;
 
 namespace VaraticPrim.Framework.TokenGenerator;
 
 public interface ITokenGeneratorService
 {
-    public AccessTokenModel GenerateAccessToken(UserModel user);
-    string GenerateRefreshToken();
-    ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token);
+    AccessTokenModel GenerateAccessToken(int userId);
+    RefreshToken GenerateRefreshToken();
 }

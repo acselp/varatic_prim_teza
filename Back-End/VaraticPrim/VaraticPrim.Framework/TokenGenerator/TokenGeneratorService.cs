@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using VaraticPrim.Framework.Models;
+using VaraticPrim.Framework.Models.TokenModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.Service.Authentication;
@@ -21,7 +22,7 @@ public class TokenGeneratorService : ITokenGeneratorService
         _options = options;
     }
     
-    public AccessTokenModel GenerateAccessToken(UserModel user)
+    public AccessTokenModel GenerateAccessToken(int userId)
     {
         var securityKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
@@ -30,7 +31,7 @@ public class TokenGeneratorService : ITokenGeneratorService
 
         var claims = new[]
         {
-            new Claim(ClaimsTypes.UserId, user.Id.ToString()),
+            new Claim(ClaimsTypes.UserId, userId.ToString()),
         };
 
         var expirationTime = DateTime.Now.AddMinutes(_options.Value.AccessTokenExpirationTimeMin);
@@ -41,37 +42,24 @@ public class TokenGeneratorService : ITokenGeneratorService
             expires: expirationTime,
             signingCredentials: credentials);
 
-        return new AccessTokenModel()
+        return new AccessTokenModel
         {
-            RefreshTokenExpirationTime = expirationTime,
-            AccessToken = new JwtSecurityTokenHandler().WriteToken(token)
+            ExpirationTime = expirationTime,
+            AccessToken    = new JwtSecurityTokenHandler().WriteToken(token),
+            TokenType      = "Bearer"
         };
     }
     
-    public string GenerateRefreshToken()
+    public RefreshToken GenerateRefreshToken()
     {
-        var randomNumber = new byte[64];
-        using var rng = RandomNumberGenerator.Create();
+        var       randomNumber = new byte[64];
+        using var rng          = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
-    }
-    
-    public ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
-    {
-        var tokenValidationParameters = new TokenValidationParameters
+
+        return new RefreshToken
         {
-            ValidateAudience = false,
-            ValidateIssuer = false,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key)),
-            ValidateLifetime = false
+            Token   = Convert.ToBase64String(randomNumber),
+            Expires = DateTime.UtcNow.AddMinutes(_options.Value.RefreshTokenExpirationTimeDays),
         };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-            throw new SecurityTokenException("Invalid token");
-
-        return principal;
     }
 }

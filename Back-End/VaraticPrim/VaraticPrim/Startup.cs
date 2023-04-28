@@ -1,11 +1,11 @@
-﻿using Infeastructure.Migrations.Evolve;
+﻿using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
-using VaraticPrim.Repository.Persistance;
+using VaraticPrim.Repository.Persistence;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service;
 
@@ -13,16 +13,16 @@ namespace VaraticPrim;
 
 public class Startup {
     
-    private IConfiguration _config { get; }
+    private IConfiguration Config { get; }
 
     public Startup(IConfiguration configuration) 
     {
-        _config = configuration;
+        Config = configuration;
     }
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.Configure<JwtConfiguration>(_config.GetSection("Jwt"));
+        services.Configure<JwtConfiguration>(Config.GetSection("Jwt"));
         services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -32,10 +32,10 @@ public class Startup {
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
         
-        services.AddJwt(_config);
+        services.AddJwt(Config);
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseLazyLoadingProxies()
-            .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
+            .UseNpgsql(Config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
         
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -48,7 +48,7 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
-        services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
+        services.AddMigrations(Config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)

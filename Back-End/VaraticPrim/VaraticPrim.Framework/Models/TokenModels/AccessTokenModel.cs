@@ -1,10 +1,8 @@
-﻿using System.Globalization;
-
-namespace VaraticPrim.Framework.Models;
+﻿namespace VaraticPrim.Framework.Models.TokenModels;
 
 public class AccessTokenModel
 {
-    public DateTime RefreshTokenExpirationTime { get; set; }
-    public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
+    public DateTime ExpirationTime { get; set; }
+    public string   AccessToken    { get; set; }
+    public string   TokenType      { get; set; }
 }
