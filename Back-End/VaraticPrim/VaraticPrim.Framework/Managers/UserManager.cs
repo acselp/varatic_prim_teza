@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;

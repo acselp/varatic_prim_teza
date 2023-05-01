@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Infeastructure.Migrations.Evolve</RootNamespace>
+        <RootNamespace>Infrastructure.Migrations.Evolve</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

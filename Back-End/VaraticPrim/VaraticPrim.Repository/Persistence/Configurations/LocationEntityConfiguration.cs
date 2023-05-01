@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 
-namespace VaraticPrim.Repository.Persistance.Configurations;
+namespace VaraticPrim.Repository.Persistence.Configurations;
 
 public class LocationEntityConfiguration : IEntityTypeConfiguration<LocationEntity>
 {

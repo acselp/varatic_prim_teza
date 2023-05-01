@@ -1,5 +1,5 @@
-﻿using VaraticPrim.Domain.Entity;
-using VaraticPrim.Repository.Persistance;
+﻿using VaraticPrim.Domain.Entities;
+using VaraticPrim.Repository.Persistence;
 
 namespace VaraticPrim.Repository.Repository;
 
