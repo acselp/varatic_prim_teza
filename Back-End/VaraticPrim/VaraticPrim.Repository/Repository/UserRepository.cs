@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Domain.Entities;
 using VaraticPrim.Repository.Paged;
 using VaraticPrim.Repository.Persistence;
