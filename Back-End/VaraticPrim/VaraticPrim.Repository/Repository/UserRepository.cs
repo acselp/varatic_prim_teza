@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Domain.Entities;
+using VaraticPrim.Repository.Paged;
 using VaraticPrim.Repository.Persistence;
 
 namespace VaraticPrim.Repository.Repository;
@@ -28,5 +29,11 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     public async Task<bool> EmailExists(string email)
     {
         return await Table.AnyAsync(it => it.Email == email.ToLower().Trim());
+    }
+
+    public async Task<PagedList<UserEntity>> GetAll(UserFilter filter)
+    {
+        var pagedAsync = await Table.ToPagedAsync(filter.PageIndex, filter.PageSize);
+        return pagedAsync;
     }
 }
