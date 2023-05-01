@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entity;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
+using PagedList;
+using VaraticPrim.Framework.Models.PaginationModels;
 
 namespace VaraticPrim.Framework.Managers;
 
@@ -79,6 +82,23 @@ public class UserManager
             }
 
             return _mapper.Map<UserModel>(userEntity);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to get user");
+            throw;
+        }
+    }
+    
+    public async Task<IEnumerable<UserModel>> GetAll([FromBody] PageFilterModel? pageFilter)
+    {
+        try
+        {
+            var users = await _userRepository.GetAll();
+
+            var result = users.ToPagedList(pageFilter.PageNr, pageFilter.PageSize);
+
+            return _mapper.Map<IEnumerable<UserModel>>(result);
         }
         catch (Exception e)
         {
