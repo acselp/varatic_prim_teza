@@ -1,5 +1,4 @@
 using FluentValidation;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework.Exceptions;
@@ -12,12 +11,6 @@ namespace VaraticPrim.Controllers;
 public class UserController : ApiBaseController
 {
     private readonly UserManager _userManager;
-
-    public UserController(
-        UserManager userManager,
-        IBackgroundJobClient bgJobClient)
-    {
-        _userManager = userManager;
 
     public UserController(
         UserManager userManager)

@@ -16,11 +16,11 @@ namespace VaraticPrim;
 
 public class Startup {
     
-    private IConfiguration Config { get; }
+    private IConfiguration _config { get; }
 
     public Startup(IConfiguration configuration) 
     {
-        Config = configuration;
+        _config = configuration;
     }
     
     public void ConfigureServices(IServiceCollection services)
@@ -28,7 +28,7 @@ public class Startup {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         
 
-        services.Configure<JwtConfiguration>(Config.GetSection("Jwt"));
+        services.Configure<JwtConfiguration>(_config.GetSection("Jwt"));
 
         services.AddMvc(options =>
             {
@@ -39,10 +39,10 @@ public class Startup {
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
         
-        services.AddJwt(Config);
+        services.AddJwt(_config);
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseLazyLoadingProxies()
-            .UseNpgsql(Config.GetConnectionString("DefaultConnection"))
+            .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
         
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
