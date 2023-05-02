@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +12,17 @@ namespace VaraticPrim.Controllers;
 public class UserController : ApiBaseController
 {
     private readonly UserManager _userManager;
-    private readonly IBackgroundJobClient _bgJobClient;
 
     public UserController(
         UserManager userManager,
         IBackgroundJobClient bgJobClient)
     {
         _userManager = userManager;
-        _bgJobClient = bgJobClient;
+
+    public UserController(
+        UserManager userManager)
+    {
+        _userManager = userManager;
     }
     
     [HttpGet("{id:int}")]
@@ -37,7 +40,9 @@ public class UserController : ApiBaseController
         }
     }
 
+
     [AllowAnonymous] //For dev
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {

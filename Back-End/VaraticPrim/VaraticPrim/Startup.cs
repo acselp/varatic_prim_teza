@@ -16,18 +16,20 @@ namespace VaraticPrim;
 
 public class Startup {
     
-    private IConfiguration _config { get; }
+    private IConfiguration Config { get; }
 
     public Startup(IConfiguration configuration) 
     {
-        _config = configuration;
+        Config = configuration;
     }
     
     public void ConfigureServices(IServiceCollection services)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         
-        services.Configure<JwtConfiguration>(_config.GetSection("Jwt"));
+
+        services.Configure<JwtConfiguration>(Config.GetSection("Jwt"));
+
         services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -37,10 +39,10 @@ public class Startup {
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
         
-        services.AddJwt(_config);
+        services.AddJwt(Config);
         services.AddDbContextPool<ApplicationDbContext>(options => options
             .UseLazyLoadingProxies()
-            .UseNpgsql(_config.GetConnectionString("DefaultConnection"))
+            .UseNpgsql(Config.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention());
         
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -60,9 +62,6 @@ public class Startup {
             .UseRecommendedSerializerSettings()
             .UsePostgreSqlStorage(_config.GetConnectionString("DefaultConnection")));
         services.AddHangfireServer();
-        
-        
-        services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
