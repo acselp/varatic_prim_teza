@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Authentication;
 using VaraticPrim.Service.Interfaces;

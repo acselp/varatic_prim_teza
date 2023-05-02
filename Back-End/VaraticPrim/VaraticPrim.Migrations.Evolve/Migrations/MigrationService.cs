@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 
-namespace Infeastructure.Migrations.Evolve;
+namespace Infrastructure.Migrations.Evolve.Migrations;
 
 public class MigrationService:IMigrationService
 {

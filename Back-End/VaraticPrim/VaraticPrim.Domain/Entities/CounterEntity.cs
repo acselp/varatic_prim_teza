@@ -1,4 +1,4 @@
-﻿namespace VaraticPrim.Domain.Entity;
+﻿namespace VaraticPrim.Domain.Entities;
 
 public class CounterEntity : BaseEntity
 {

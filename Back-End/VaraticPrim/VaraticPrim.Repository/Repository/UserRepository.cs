@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using VaraticPrim.Domain.Entity;
-using VaraticPrim.Repository.Persistance;
+using Microsoft.EntityFrameworkCore;
+using VaraticPrim.Domain.Entities;
+using VaraticPrim.Repository.Paged;
+using VaraticPrim.Repository.Persistence;
 
 namespace VaraticPrim.Repository.Repository;
 
@@ -13,15 +13,11 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
 
     public new async Task Update(UserEntity entity)
     {
-        entity.Contact.CreatedOnUtc = DateTime.UtcNow;
-        entity.Contact.UpdatedOnUtc = DateTime.UtcNow;
         await base.Update(entity);
     }
 
     public new async Task Insert(UserEntity entity)
     {
-        entity.Contact.CreatedOnUtc = DateTime.UtcNow;
-        entity.Contact.UpdatedOnUtc = DateTime.UtcNow;
         await base.Insert(entity);
     }
 
@@ -33,5 +29,11 @@ public class UserRepository : GenericRepository<UserEntity>, IUserRepository
     public async Task<bool> EmailExists(string email)
     {
         return await Table.AnyAsync(it => it.Email == email.ToLower().Trim());
+    }
+
+    public async Task<PagedList<UserEntity>> GetAll(UserFilter filter)
+    {
+        var pagedAsync = await Table.ToPagedAsync(filter.PageIndex, filter.PageSize);
+        return pagedAsync;
     }
 }

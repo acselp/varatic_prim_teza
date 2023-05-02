@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.CounterModels;
-using VaraticPrim.Framework.Models.LocationModels;
-using VaraticPrim.Framework.Models.UserModels;
 
 namespace VaraticPrim.Controllers;
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.Models.CounterModels;
 using VaraticPrim.Framework.Models.LocationModels;
 using LocationCreateModel = VaraticPrim.Framework.Models.LocationModels.LocationCreateModel;

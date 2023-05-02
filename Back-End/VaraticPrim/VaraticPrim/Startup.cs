@@ -1,13 +1,14 @@
-﻿using Hangfire;
+using Hangfire;
+using Hangfire.Dashboard.Resources;
 using Hangfire.PostgreSql;
-using Infeastructure.Migrations.Evolve;
+using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
-using VaraticPrim.Repository.Persistance;
+using VaraticPrim.Repository.Persistence;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service;
 
@@ -24,6 +25,8 @@ public class Startup {
     
     public void ConfigureServices(IServiceCollection services)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        
         services.Configure<JwtConfiguration>(_config.GetSection("Jwt"));
         services.AddMvc(options =>
             {
@@ -44,6 +47,7 @@ public class Startup {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ICounterRepository, CounterRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddControllers();
         services.AddOptions();
         services.AddEndpointsApiExplorer();
@@ -58,17 +62,18 @@ public class Startup {
         services.AddHangfireServer();
         
         
+        services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
     {
-        if (!env.IsDevelopment()) 
+        if (!env.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        
+
         app.UseRouting();
         
         app.UseAuthentication();
@@ -76,5 +81,7 @@ public class Startup {
         app.UseAuthorization();
         
         app.UseHangfireDashboard();
+        
+        RecurringJob.AddOrUpdate("print-now-minutely", () => Console.WriteLine(DateTime.Now.ToString()), Cron.Minutely);
     }
 }

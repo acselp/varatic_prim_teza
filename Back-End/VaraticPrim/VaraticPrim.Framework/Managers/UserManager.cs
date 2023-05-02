@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.Exceptions;
+using VaraticPrim.Framework.Extentions;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
 using VaraticPrim.Service.Interfaces;
@@ -136,5 +137,17 @@ public class UserManager
             _logger.LogError(e, "Failed to update user");
             throw;
         }
+    }
+
+    public async Task<PagedListModel<UserModel>> GetAll(UserFilterModel filterModel)
+    {
+        //UserFiltermodel in UserFilter
+        var pagedList = await _userRepository.GetAll(new UserFilter
+        {
+            PageIndex = filterModel.PageIndex,
+            PageSize = filterModel.PageSize
+        });
+        
+        return pagedList.Map(entity => _mapper.Map<UserModel>(entity));
     }
 }

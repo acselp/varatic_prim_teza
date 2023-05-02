@@ -1,32 +1,25 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.UserModels;
-using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Controllers;
 
 [Route("[controller]")]
 public class UserController : ApiBaseController
 {
-    private readonly ILogger<UserController> _logger;
     private readonly UserManager _userManager;
-    private readonly IMapper _mapper;
-    private readonly IAuthenticationAccessor _authenticationAccessor;
+    private readonly IBackgroundJobClient _bgJobClient;
 
     public UserController(
         UserManager userManager,
-        ILogger<UserController> logger, 
-        IMapper mapper,
-        IAuthenticationAccessor authenticationAccessor)
+        IBackgroundJobClient bgJobClient)
     {
-        _authenticationAccessor = authenticationAccessor;
-        _mapper = mapper;
         _userManager = userManager;
-        _logger = logger;
+        _bgJobClient = bgJobClient;
     }
     
     [HttpGet("{id:int}")]
@@ -35,7 +28,7 @@ public class UserController : ApiBaseController
         try
         {
             var model = await _userManager.GetById(id);
-
+            
             return Ok(model);
         }
         catch (UserNotFoundException e)
@@ -44,7 +37,7 @@ public class UserController : ApiBaseController
         }
     }
 
-    [AllowAnonymous]
+    [AllowAnonymous] //For dev
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {
@@ -76,7 +69,6 @@ public class UserController : ApiBaseController
         }
     }
     
-    [AllowAnonymous]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromBody] UserUpdateModel userModel, [FromRoute] int id)
     {
@@ -92,5 +84,11 @@ public class UserController : ApiBaseController
         {
             return BadRequest("email_already_exists", "Email already exists");
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] UserFilterModel filterModel)
+    {
+        return Ok(await _userManager.GetAll(filterModel));
     }
 }

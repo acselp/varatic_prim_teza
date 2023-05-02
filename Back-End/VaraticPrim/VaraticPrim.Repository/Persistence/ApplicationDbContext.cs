@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using VaraticPrim.Repository.Persistance.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace VaraticPrim.Repository.Persistance;
+namespace VaraticPrim.Repository.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
