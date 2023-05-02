@@ -67,6 +67,6 @@ public class Startup {
         
         app.UseAuthorization();
         
-        app.UseHangfireDashboard();
+        //app.UseHangfireDashboard();
     }
 }
