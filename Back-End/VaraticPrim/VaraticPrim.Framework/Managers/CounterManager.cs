@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using VaraticPrim.Domain.Entity;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.CounterModels;
 using VaraticPrim.Framework.Models.LocationModels;
@@ -12,10 +12,10 @@ namespace VaraticPrim.Framework.Managers;
 
 public class CounterManager
 {
-    private ILocationRepository _locationRepository;
-    private readonly ICounterRepository _counterRepository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<CounterManager> _logger;
+    private readonly ILocationRepository            _locationRepository;
+    private readonly ICounterRepository             _counterRepository;
+    private readonly IMapper                        _mapper;
+    private readonly ILogger<CounterManager>        _logger;
     private readonly IValidator<CounterCreateModel> _counterCreateValidator;
     private readonly IValidator<CounterUpdateModel> _counterUpdateValidator;
 

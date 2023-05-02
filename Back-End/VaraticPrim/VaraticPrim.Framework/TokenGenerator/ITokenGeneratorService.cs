@@ -1,9 +1,9 @@
-﻿using VaraticPrim.Framework.Models;
-using VaraticPrim.Framework.Models.UserModels;
+﻿using VaraticPrim.Framework.Models.TokenModels;
 
 namespace VaraticPrim.Framework.TokenGenerator;
 
 public interface ITokenGeneratorService
 {
-    public AccessTokenModel Generate(UserModel user);
+    AccessTokenModel GenerateAccessToken(int userId);
+    RefreshToken GenerateRefreshToken();
 }

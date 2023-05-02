@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using VaraticPrim.Domain.Entity;
-using VaraticPrim.Repository.Persistance;
+using VaraticPrim.Domain.Entities;
+using VaraticPrim.Repository.Persistence;
 
 namespace VaraticPrim.Repository.Repository;
 

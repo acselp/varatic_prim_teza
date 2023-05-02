@@ -1,9 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using VaraticPrim.Framework.Models;
+using VaraticPrim.Framework.Models.TokenModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.Service.Authentication;
@@ -19,7 +22,7 @@ public class TokenGeneratorService : ITokenGeneratorService
         _options = options;
     }
     
-    public AccessTokenModel Generate(UserModel user)
+    public AccessTokenModel GenerateAccessToken(int userId)
     {
         var securityKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
@@ -28,10 +31,10 @@ public class TokenGeneratorService : ITokenGeneratorService
 
         var claims = new[]
         {
-            new Claim(ClaimsTypes.UserId, user.Id.ToString()),
+            new Claim(ClaimsTypes.UserId, userId.ToString()),
         };
 
-        var expirationTime = DateTime.Now.AddMinutes(_options.Value.ExpirationTime);
+        var expirationTime = DateTime.Now.AddMinutes(_options.Value.AccessTokenExpirationTimeMin);
         var token = new JwtSecurityToken(
             _options.Value.Issuer,
             _options.Value.Audience,
@@ -39,10 +42,24 @@ public class TokenGeneratorService : ITokenGeneratorService
             expires: expirationTime,
             signingCredentials: credentials);
 
-        return new AccessTokenModel()
+        return new AccessTokenModel
         {
-            TokenExpirationTime = expirationTime,
-            Token = new JwtSecurityTokenHandler().WriteToken(token)
+            ExpirationTime = expirationTime,
+            AccessToken    = new JwtSecurityTokenHandler().WriteToken(token),
+            TokenType      = "Bearer"
+        };
+    }
+    
+    public RefreshToken GenerateRefreshToken()
+    {
+        var       randomNumber = new byte[64];
+        using var rng          = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+
+        return new RefreshToken
+        {
+            Token   = Convert.ToBase64String(randomNumber),
+            Expires = DateTime.UtcNow.AddMinutes(_options.Value.RefreshTokenExpirationTimeMin),
         };
     }
 }
