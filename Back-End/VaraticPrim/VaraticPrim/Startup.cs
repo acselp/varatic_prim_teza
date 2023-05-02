@@ -1,4 +1,6 @@
-﻿using Infeastructure.Migrations.Evolve;
+﻿using Hangfire;
+using Hangfire.PostgreSql;
+using Infeastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +50,14 @@ public class Startup {
         services.AddFramework();
         services.AddServices();
         services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
+        services.AddHangfire(configuration => configuration
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UsePostgreSqlStorage(_config.GetConnectionString("DefaultConnection")));
+        services.AddHangfireServer();
+        
+        
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -60,7 +70,11 @@ public class Startup {
         }
         
         app.UseRouting();
+        
         app.UseAuthentication();
+        
         app.UseAuthorization();
+        
+        app.UseHangfireDashboard();
     }
 }
