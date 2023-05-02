@@ -20,8 +20,8 @@ public class MigrationService:IMigrationService
 
         _evolve.Placeholders = new Dictionary<string, string>
         {
-            ["${database}"] = "varatic_prim",
-            ["${schema1}"] = "public"
+            ["${database}"] = "postgres",
+            ["${schema}"] = "public"
         };
     }
 

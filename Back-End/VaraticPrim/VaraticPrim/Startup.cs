@@ -5,6 +5,7 @@ using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using VaraticPrim.Background.Hangfire;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
@@ -26,7 +27,6 @@ public class Startup {
     public void ConfigureServices(IServiceCollection services)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        
 
         services.Configure<JwtConfiguration>(_config.GetSection("Jwt"));
 
@@ -56,12 +56,7 @@ public class Startup {
         services.AddFramework();
         services.AddServices();
         services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
-        services.AddHangfire(configuration => configuration
-            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-            .UseSimpleAssemblyNameTypeSerializer()
-            .UseRecommendedSerializerSettings()
-            .UsePostgreSqlStorage(_config.GetConnectionString("DefaultConnection")));
-        services.AddHangfireServer();
+        services.AddBackgroundJobs(_config.GetConnectionString("DefaultConnection"));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -80,7 +75,5 @@ public class Startup {
         app.UseAuthorization();
         
         app.UseHangfireDashboard();
-        
-        RecurringJob.AddOrUpdate("print-now-minutely", () => Console.WriteLine(DateTime.Now.ToString()), Cron.Minutely);
     }
 }
