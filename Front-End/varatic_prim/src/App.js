@@ -5,7 +5,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
-import Users from "./scenes/contacts";
+import Users from "./scenes/Users/Users";
 import Bar from "./scenes/bar";
 import Form from "./scenes/CreateUser/CreateUser";
 import Line from "./scenes/line";

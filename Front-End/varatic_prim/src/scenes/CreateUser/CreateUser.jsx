@@ -1,21 +1,26 @@
 import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
+import {ErrorMessage, Formik} from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { ArrowBackOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import axios, {AxiosError} from "axios";
-import {useState} from "react";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import MyAxios from "../../api/axios";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   let [error, setError] = useState("");
+  let [repeatCreateUser, setRepreatCreateUser] = useState(false);
 
   const handleFormSubmit = async (values) => {
       try {
-          const response = await axios.post(
-              "http://localhost:5000/user",
+
+          console.log(values);
+
+          const response = await MyAxios.post(
+              "/user",
               {
                   email: values.email,
                   password: values.password,
@@ -28,14 +33,19 @@ const Form = () => {
               }
           )
 
-          navigate("/");
+          if(!repeatCreateUser)
+            navigate("/users");
       }
       catch(err) {
-          if (err && err instanceof AxiosError)
+          if (err && err instanceof AxiosError) {
               setError(err.response?.data.message);
+              console.log(err.response?.data.message);
+          }
 
-          else if (err && err instanceof Error)
+          else if (err && err instanceof Error){
               setError(err.message);
+              console.log(err.message);
+          }
       }
   };
 
@@ -62,6 +72,7 @@ const Form = () => {
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
+
         {({
           values,
           errors,
@@ -71,6 +82,9 @@ const Form = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
+              <Box color={"red"}>
+                  {error ? error : ""}
+              </Box>
             <Box
               display="grid"
               gap="30px"

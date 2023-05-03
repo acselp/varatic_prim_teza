@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import {Box, LinearProgress} from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -9,25 +9,94 @@ import { EditOutlined } from "@mui/icons-material";
 import { AddOutlined } from "@mui/icons-material";
 import { DeleteOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
+import {useEffect, useState} from "react";
+import MyAxios from "../../api/axios";
+import {useAuthHeader} from "react-auth-kit";
 const Users = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  let [userData, setUserData] = useState([]);
+  let [pageIndex, setPageIdex] = useState(0);
+  let [pageSize, setPageSize] = useState(100);
+  const authHeader = useAuthHeader();
+  let [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getAndSetUserData();
+  }, [])
+
+    function getAndSetUserData() {
+        setIsLoading(true);
+        const result = MyAxios.get(
+            `/user?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
+                headers: {"Authorization": authHeader()}
+            })
+            .then((res) => {
+                setUserData(mapUserData(res.data.data));
+            })
+        setIsLoading(false);
+    }
+
+function mapUserData(users){
+
+    let result = [];
+
+    users.map((user) => {
+        let data = {
+            id: user.id,
+            email: user.email,
+            firstName: user.contact.firstName,
+            lastName: user.contact.lastName,
+            phone: user.contact.phone,
+            mobile: user.contact.mobile
+        }
+
+        result.push(data);
+    })
+
+    return result;
+}
 
   function addUserHandler() {
       navigate("/user/add");
   }
 
+  function handleEdit(id) {
+
+  }
+
+  function handleDelete(id) {
+      MyAxios.delete(
+          `/user/${id}`,
+          {
+              headers: {"Authorization": authHeader()}
+          })
+          .then((res) => {
+              navigate("/users");
+          })
+
+      let data = userData;
+      let data2 = data.filter((user) => {
+          return user.id !== id;
+      })
+
+      setUserData(data2);
+  }
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "firstName", headerName: "Nume" },
+    {
+        field: "firstName",
+        headerName: "Nume",
+        flex: 1,
+    },
     {
       field: "lastName",
       headerName: "Prenume",
-      flex: 1,
       cellClassName: "name-column--cell",
+        flex: 1,
     },
     {
       field: "phone",
@@ -35,26 +104,19 @@ const Users = () => {
       type: "phone",
       headerAlign: "left",
       align: "left",
+        flex: 1,
     },
     {
       field: "mobile",
       headerName: "Celular",
-      flex: 1,
+        flex: 1,
+
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "address",
-      headerName: "Adresa",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "Oras",
-      flex: 1,
+        flex: 1,
+
     },
     {
       field: "actions",
@@ -62,14 +124,14 @@ const Users = () => {
       flex: 1,
       align: "left",
       headerAlign: "left",
-      renderCell: () => {
+      renderCell: (params) => {
         return (
-          <Box width="70%" display={"flex"} justifyContent={"space-between"}>
-            <Button style={{backgroundColor: "#eee9"}}>
+          <Box width="70%" display={"flex"}>
+            <Button style={{backgroundColor: "#eee9", marginRight: "10px"}}>
               <EditOutlined />
             </Button>
 
-            <Button style={{backgroundColor: "#E2403C"}}>
+            <Button onClick={() => {handleDelete(params.row.id)}} style={{backgroundColor: "#E2403C"}}>
               <DeleteOutline />
             </Button>
           </Box>
@@ -124,9 +186,21 @@ const Users = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
+            slots={{
+                loadingOverlay: LinearProgress
+            }}
+            rows={userData}
+            columns={columns}
+            components={{ Toolbar: GridToolbar }}
+            onPageSizeChange={size => {
+              setPageSize(size);
+              //getAndSetUserData();
+            }}
+            pageSize={pageSize}
+            onPageChange={(page) => {
+              setPageIdex(page - 1);
+              //getAndSetUserData();
+            }}
         />
       </Box>
     </Box>

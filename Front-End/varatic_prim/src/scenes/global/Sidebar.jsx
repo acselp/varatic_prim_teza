@@ -149,7 +149,7 @@ const Sidebar = () => {
               />
               <Item
                 title="Salubrizare"
-                to="/users"
+                to="/userss"
                 icon={<RecyclingOutlined />}
                 selected={selected}
                 setSelected={setSelected}
@@ -171,7 +171,7 @@ const Sidebar = () => {
               </Typography>
               <Item
                 title="Utilizatori"
-                to="/form"
+                to="/users"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}

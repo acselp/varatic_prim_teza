@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import Header from "../../components/Header";
 import axios, {AxiosError} from "axios";
 import {useSignIn} from "react-auth-kit";
+import {diffMinutes} from "../../TimeService/Time";
 
 function Login() {
     let [email, setEmail] = useState("");
@@ -22,22 +23,30 @@ function Login() {
                 {email: values.email, password: values.password}
             )
 
+
             signIn({
                 token: response.data.accessToken,
-                refreshToken: response.data.refreshToken,
-                expiresIn: 3600,
+                expiresIn: 14,         //Minutes
                 tokenType: "Bearer",
-                authState: { email: values.email }
+                authState: { email: values.email },
+                refreshToken: response.data.refreshToken,
+                refreshTokenExpireIn: 359
             })
+            console.log(response);
 
             navigate("/");
         }
         catch(err) {
-            if (err && err instanceof AxiosError)
+            if (err && err instanceof AxiosError) {
                 setError(err.response?.data.message);
+                console.log(err.response?.data.message);
+            }
 
-            else if (err && err instanceof Error)
+
+            else if (err && err instanceof Error) {
                 setError(err.message);
+                console.log(err.message);
+            }
         }
     };
 
