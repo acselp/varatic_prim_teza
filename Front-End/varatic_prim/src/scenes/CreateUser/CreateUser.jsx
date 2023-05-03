@@ -5,12 +5,38 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { ArrowBackOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import axios, {AxiosError} from "axios";
+import {useState} from "react";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  let [error, setError] = useState("");
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const handleFormSubmit = async (values) => {
+      try {
+          const response = await axios.post(
+              "http://localhost:5000/user",
+              {
+                  email: values.email,
+                  password: values.password,
+                  contact: {
+                      firstName: values.firstName,
+                      lastName: values.lastName,
+                      phone: values.phone,
+                      mobile: values.mobile
+                  }
+              }
+          )
+
+          navigate("/");
+      }
+      catch(err) {
+          if (err && err instanceof AxiosError)
+              setError(err.response?.data.message);
+
+          else if (err && err instanceof Error)
+              setError(err.message);
+      }
   };
 
   const navigate = useNavigate();
@@ -18,6 +44,8 @@ const Form = () => {
   function backUserHandler() {
       navigate("/users");
   }
+
+
 
   return (
     <Box m="20px">

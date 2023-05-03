@@ -5,16 +5,41 @@ import * as yup from "yup";
 import {Formik} from "formik";
 import {useNavigate} from "react-router-dom";
 import Header from "../../components/Header";
+import axios, {AxiosError} from "axios";
+import {useSignIn} from "react-auth-kit";
 
 function Login() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
-
-    const handleFormSubmit = (values) => {
-        console.log(values);
-    };
-
+    let [error, setError] = useState("");
+    const signIn = useSignIn();
     const navigate = useNavigate();
+    const handleFormSubmit = async (values) => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/authentication/login",
+                {email: values.email, password: values.password}
+            )
+
+            signIn({
+                token: response.data.accessToken,
+                refreshToken: response.data.refreshToken,
+                expiresIn: 3600,
+                tokenType: "Bearer",
+                authState: { email: values.email }
+            })
+
+            navigate("/");
+        }
+        catch(err) {
+            if (err && err instanceof AxiosError)
+                setError(err.response?.data.message);
+
+            else if (err && err instanceof Error)
+                setError(err.message);
+        }
+    };
 
     return (
         <Box display={"flex"} alignItems={"center"} mt={"150px"} flexDirection={"column"}>
