@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaraticPrim.Framework.Exceptions;
@@ -24,7 +24,7 @@ public class UserController : ApiBaseController
         try
         {
             var model = await _userManager.GetById(id);
-
+            
             return Ok(model);
         }
         catch (UserNotFoundException e)
@@ -33,7 +33,7 @@ public class UserController : ApiBaseController
         }
     }
 
-    [AllowAnonymous]
+    [AllowAnonymous] //For dev
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {

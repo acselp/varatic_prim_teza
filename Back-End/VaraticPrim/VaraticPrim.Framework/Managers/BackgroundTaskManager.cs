@@ -11,6 +11,6 @@ public class BackgroundTaskManager
     
     public Task GenerateInvoicesMonthly()
     {
-        
+        throw new Exception();
     }
 }

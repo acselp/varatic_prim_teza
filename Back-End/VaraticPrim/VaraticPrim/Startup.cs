@@ -1,10 +1,9 @@
-using System.Text;
 using Hangfire;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using VaraticPrim.Background.Hangfire;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
@@ -53,6 +52,16 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
+        
+        services.AddMigrations(Config.GetConnectionString("DefaultConnection"));
+        services.AddBackgroundJobs(Config.GetConnectionString("DefaultConnection"));
+       
+        services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+        {
+            builder.WithOrigins("http://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }));
         services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
         {
             builder.WithOrigins("http://localhost:5001")
@@ -78,6 +87,6 @@ public class Startup {
         
         app.UseCors("MyPolicy");
 
-        //app.UseHangfireDashboard();
+        app.UseHangfireDashboard();
     }
 }
