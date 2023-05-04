@@ -1,3 +1,4 @@
+using Hangfire;
 using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -52,6 +53,7 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
+        
         services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
         services.AddBackgroundJobs(_config.GetConnectionString("DefaultConnection"));
        
@@ -80,6 +82,6 @@ public class Startup {
         
         app.UseCors("MyPolicy");
 
-        //app.UseHangfireDashboard();
+        app.UseHangfireDashboard();
     }
 }
