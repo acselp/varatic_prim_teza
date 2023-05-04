@@ -1,6 +1,3 @@
-using Hangfire;
-using Hangfire.Dashboard.Resources;
-using Hangfire.PostgreSql;
 using Infrastructure.Migrations.Evolve;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -57,6 +54,13 @@ public class Startup {
         services.AddServices();
         services.AddMigrations(_config.GetConnectionString("DefaultConnection"));
         services.AddBackgroundJobs(_config.GetConnectionString("DefaultConnection"));
+       
+        services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+        {
+            builder.WithOrigins("http://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -71,9 +75,11 @@ public class Startup {
         app.UseRouting();
         
         app.UseAuthentication();
-        
+
         app.UseAuthorization();
         
-        app.UseHangfireDashboard();
+        app.UseCors("MyPolicy");
+
+        //app.UseHangfireDashboard();
     }
 }

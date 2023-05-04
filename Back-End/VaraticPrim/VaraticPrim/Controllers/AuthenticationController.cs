@@ -46,10 +46,5 @@ public class AuthenticationController : ApiBaseController
             return BadRequest("invalid_token",
                 "Invalid token");
         }
-        catch (EmailOrPasswordNotFoundException)
-        {
-            return BadRequest("email_password_not_found",
-                "Email or password incorrect");
-        }
     } 
 }

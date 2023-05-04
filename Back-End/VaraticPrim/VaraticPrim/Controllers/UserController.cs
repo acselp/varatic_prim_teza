@@ -33,9 +33,7 @@ public class UserController : ApiBaseController
         }
     }
 
-
     [AllowAnonymous] //For dev
-
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] UserCreateModel userModel)
     {

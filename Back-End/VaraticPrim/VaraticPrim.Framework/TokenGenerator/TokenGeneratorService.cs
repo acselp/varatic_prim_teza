@@ -34,7 +34,7 @@ public class TokenGeneratorService : ITokenGeneratorService
             new Claim(ClaimsTypes.UserId, userId.ToString()),
         };
 
-        var expirationTime = DateTime.Now.AddMinutes(_options.Value.AccessTokenExpirationTimeMin);
+        var expirationTime = DateTime.UtcNow.AddMinutes(_options.Value.AccessTokenExpirationTimeMin);
         var token = new JwtSecurityToken(
             _options.Value.Issuer,
             _options.Value.Audience,
