@@ -2,6 +2,8 @@
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using VaraticPrim.Domain.Entities;
+using VaraticPrim.Email;
+using VaraticPrim.Email.Gmail;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Extentions;
 using VaraticPrim.Framework.Models.UserModels;
@@ -18,16 +20,19 @@ public class UserManager
     private readonly IMapper _mapper;
     private readonly ILogger<UserManager> _logger;
     private readonly IHashService _hashService;
-    
+    private readonly IMailingService _mailingService;
+
     public UserManager(
         IUserRepository userRepository, 
         IMapper mapper, 
         IValidator<UserCreateModel> userCreateValidator, 
         IValidator<UserUpdateModel> userUpdateValidator,
         ILogger<UserManager> logger, 
-        IHashService hashService)
+        IHashService hashService,
+        IMailingService mailingService)
     {
         _hashService = hashService;
+        _mailingService = mailingService;
         _userCreateValidator = userCreateValidator;
         _userUpdateValidator = userUpdateValidator;
         _logger = logger;
@@ -58,6 +63,8 @@ public class UserManager
 
             var userModel = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("User created.");
+
+            _logger.LogInformation("Email result = " + _mailingService.SendEmail("plesca.virgiliu@gmail.com", "Tests email subject", "Hy there, this is test body for the first email ever sent ))"));
               
             return userModel;
         }

@@ -9,6 +9,8 @@
     <ItemGroup>
         <ProjectReference Include="..\VaraticPrim.Background.Hangfire\VaraticPrim.Background.Hangfire.csproj" />
         <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Email.Gmail\VaraticPrim.Email.Gmail.csproj" />
+        <ProjectReference Include="..\VaraticPrim.Email\VaraticPrim.Email.csproj" />
         <ProjectReference Include="..\VaraticPrim.Framework\VaraticPrim.Framework.csproj" />
         <ProjectReference Include="..\VaraticPrim.JwtAuth\VaraticPrim.JwtAuth.csproj" />
         <ProjectReference Include="..\VaraticPrim.Migrations.Evolve\VaraticPrim.Migrations.Evolve.csproj" />

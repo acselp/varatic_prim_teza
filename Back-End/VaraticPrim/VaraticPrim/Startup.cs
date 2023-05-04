@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Background.Hangfire;
+using VaraticPrim.Email;
+using VaraticPrim.Email.Gmail;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
@@ -27,6 +29,8 @@ public class Startup {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         
         services.Configure<JwtConfiguration>(Config.GetSection("Jwt"));
+        services.Configure<EmailOptions>(Config.GetSection("Email"));
+
         services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -68,6 +72,9 @@ public class Startup {
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         }));
+
+        services.AddMailing();
+        services.AddGmail();
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)

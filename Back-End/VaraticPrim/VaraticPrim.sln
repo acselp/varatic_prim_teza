@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.Migrations.Evol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.Background.Hangfire", "VaraticPrim.Background.Hangfire\VaraticPrim.Background.Hangfire.csproj", "{AFB4BFDE-5F61-40CA-BA93-9B3298295191}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.Email", "VaraticPrim.Email\VaraticPrim.Email.csproj", "{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaraticPrim.Email.Gmail", "VaraticPrim.Email.Gmail\VaraticPrim.Email.Gmail.csproj", "{89D71F9D-92AD-45F3-8F2B-9D6862003A2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +66,19 @@ Global
 		{AFB4BFDE-5F61-40CA-BA93-9B3298295191}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFB4BFDE-5F61-40CA-BA93-9B3298295191}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFB4BFDE-5F61-40CA-BA93-9B3298295191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D71F9D-92AD-45F3-8F2B-9D6862003A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D71F9D-92AD-45F3-8F2B-9D6862003A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D71F9D-92AD-45F3-8F2B-9D6862003A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D71F9D-92AD-45F3-8F2B-9D6862003A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{28564F56-296B-4425-82AE-C1300B3C6061} = {05581222-5CD7-4B50-85CC-220992606327}
 		{AFB4BFDE-5F61-40CA-BA93-9B3298295191} = {05581222-5CD7-4B50-85CC-220992606327}
+		{8C1E7A5C-5340-403A-9EB8-63B454AC8DF5} = {05581222-5CD7-4B50-85CC-220992606327}
+		{89D71F9D-92AD-45F3-8F2B-9D6862003A2D} = {05581222-5CD7-4B50-85CC-220992606327}
 	EndGlobalSection
 EndGlobal
