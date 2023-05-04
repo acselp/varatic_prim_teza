@@ -64,7 +64,7 @@ public class UserManager
             var userModel = _mapper.Map<UserModel>(userEntity);
             _logger.LogInformation("User created.");
 
-            _logger.LogInformation("Email result = " + _mailingService.SendEmail("plesca.virgiliu@gmail.com", "Tests email subject", "Hy there, this is test body for the first email ever sent ))"));
+            _logger.LogInformation("Email result = " + _mailingService.SendEmail("plesca.virgiliu@gmail.com", "Tests email subject", "Hy there, this is test body for the first email ever sent ))", $"{userModel.Contact.FirstName} {userModel.Contact.LastName}"));
               
             return userModel;
         }

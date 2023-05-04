@@ -14,12 +14,12 @@ public class MailingService : IMailingService
         _options = options;
     }
 
-    public string SendEmail(string email, string subject, string body)
+    public string SendEmail(string email, string subject, string body, string fullName)
     {
         var client = _mailProvider.GetSmtpClient();
         
-        var fromEmail = new MailAddress(_options.Value.UserName, "Virgiliu Plesca");
-        var toEmail = new MailAddress(email, "Vasile");
+        var fromEmail = new MailAddress(_options.Value.UserName, _options.Value.SenderName);
+        var toEmail = new MailAddress(email);
         
         var mailMessage = new MailMessage()
         {
