@@ -25,6 +25,7 @@ public static class JwtAuthConfigurator
                     ValidateTokenReplay = true,
                     ValidIssuer = configuration.GetSection("Jwt").GetSection("Issuer").Value,
                     ValidAudience = configuration.GetSection("Jwt").GetSection("Audience").Value,
+                    ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
                             configuration

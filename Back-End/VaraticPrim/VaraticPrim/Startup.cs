@@ -1,7 +1,10 @@
+using System.Text;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using VaraticPrim.Framework;
 using VaraticPrim.JwtAuth;
 using VaraticPrim.MvcExtentions;
@@ -50,6 +53,12 @@ public class Startup {
         services.AddEndpointsApiExplorer();
         services.AddFramework();
         services.AddServices();
+        services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+        {
+            builder.WithOrigins("http://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }));
     }
     
     public void Configure(WebApplication app, IWebHostEnvironment env)
@@ -64,9 +73,11 @@ public class Startup {
         app.UseRouting();
         
         app.UseAuthentication();
-        
+
         app.UseAuthorization();
         
+        app.UseCors("MyPolicy");
+
         //app.UseHangfireDashboard();
     }
 }
