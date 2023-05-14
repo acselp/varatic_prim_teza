@@ -8,7 +8,7 @@ public class LocationEntityConfiguration : IEntityTypeConfiguration<LocationEnti
 {
     public void Configure(EntityTypeBuilder<LocationEntity> builder)
     {
-        builder.ToTable("location", schema: "public");
+        builder.ToTable("location", schema: "varatic_prim");
         
         builder.HasOne<UserEntity>(l => l.User)
             .WithMany()

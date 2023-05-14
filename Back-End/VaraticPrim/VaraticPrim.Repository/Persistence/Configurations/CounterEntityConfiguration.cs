@@ -8,10 +8,13 @@ public class CounterEntityConfiguration : IEntityTypeConfiguration<CounterEntity
 {
     public void Configure(EntityTypeBuilder<CounterEntity> builder)
     {
-        builder.ToTable("counter", schema: "public");
+        builder.ToTable("counter", schema: "varatic_prim");
         
         builder.HasOne<LocationEntity>(c => c.Location)
             .WithMany()
             .HasForeignKey(c => c.LocationId);
+
+        builder.Ignore(c => c.UpdatedOnUtc);
+        builder.Ignore(c => c.CreatedOnUtc);
     }
 }

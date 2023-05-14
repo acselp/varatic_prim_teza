@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Framework.Errors;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.LocationModels;
@@ -40,7 +41,7 @@ public class LocationController : ApiBaseController
         }
         catch (LocationNotFoundException)
         {
-            return BadRequest("location_not_found", "Location not found");
+            return BadRequest(FrontEndErrors.LocationNotFound.ErrorCode, FrontEndErrors.LocationNotFound.ErrorMessage);
         }
     }
     
@@ -54,7 +55,7 @@ public class LocationController : ApiBaseController
         }
         catch (LocationNotFoundException e)
         {
-            return BadRequest("location_not_found", "Location not found");
+            return BadRequest(FrontEndErrors.LocationNotFound.ErrorCode, FrontEndErrors.LocationNotFound.ErrorMessage);
         }
     }
 
@@ -68,7 +69,7 @@ public class LocationController : ApiBaseController
         }
         catch (LocationNotFoundException e)
         {
-            return BadRequest("location_not_found", "Location not found");
+            return BadRequest(FrontEndErrors.LocationNotFound.ErrorCode, FrontEndErrors.LocationNotFound.ErrorMessage);
         }
     }
 }

@@ -15,6 +15,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\VaraticPrim.Domain\VaraticPrim.Domain.csproj" />
+      <ProjectReference Include="..\VaraticPrim.Email.Gmail\VaraticPrim.Email.Gmail.csproj" />
+      <ProjectReference Include="..\VaraticPrim.Email\VaraticPrim.Email.csproj" />
       <ProjectReference Include="..\VaraticPrim.Service\VaraticPrim.Service.csproj" />
     </ItemGroup>
 

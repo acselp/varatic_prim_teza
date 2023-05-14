@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using VaraticPrim.Domain.Entities;
 using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Framework.Validation;
 
@@ -13,5 +14,6 @@ public static class Configurator
         serviceCollection.AddScoped<UserManager>();
         serviceCollection.AddScoped<LocationManager>();
         serviceCollection.AddScoped<CounterManager>();
+        serviceCollection.AddScoped<ServiceManager>();
     }
 }

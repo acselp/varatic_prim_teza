@@ -1,6 +1,6 @@
 ﻿using VaraticPrim.Domain.Entities;
 
-namespace VaraticPrim.Repository.Repository;
+namespace VaraticPrim.Repository.Repository.Interfaces;
 
 public interface IGenericRepository<T> where T : BaseEntity
 {

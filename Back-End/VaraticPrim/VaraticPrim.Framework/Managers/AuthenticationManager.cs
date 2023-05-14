@@ -4,6 +4,7 @@ using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.LoginModel;
 using VaraticPrim.Framework.TokenGenerator;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Repository.Repository.Interfaces;
 using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Framework.Managers;

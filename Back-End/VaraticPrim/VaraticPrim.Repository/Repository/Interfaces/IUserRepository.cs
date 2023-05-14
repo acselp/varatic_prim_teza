@@ -1,7 +1,7 @@
 using VaraticPrim.Domain.Entities;
 using VaraticPrim.Repository.Paged;
 
-namespace VaraticPrim.Repository.Repository;
+namespace VaraticPrim.Repository.Repository.Interfaces;
 
 public interface IUserRepository : IGenericRepository<UserEntity>
 {

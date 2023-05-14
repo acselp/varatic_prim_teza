@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using VaraticPrim.Domain.Entities;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Repository.Repository.Interfaces;
 using VaraticPrim.Service.Authentication;
 using VaraticPrim.Service.Interfaces;
 

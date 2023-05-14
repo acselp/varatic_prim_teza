@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Framework.Errors;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.UserModels;
@@ -29,7 +30,7 @@ public class UserController : ApiBaseController
         }
         catch (UserNotFoundException e)
         {
-            return BadRequest("user_not_found", "User not found");
+            return BadRequest(FrontEndErrors.UserNotFound.ErrorCode, FrontEndErrors.UserNotFound.ErrorMessage);
         }
     }
 
@@ -47,7 +48,7 @@ public class UserController : ApiBaseController
         }
         catch (UserAlreadyExistsException e)
         {
-            return BadRequest("user_already_exists", "User already exists");
+            return BadRequest(FrontEndErrors.UserAlreadyExists.ErrorCode, FrontEndErrors.UserAlreadyExists.ErrorMessage);
         }
     }
     
@@ -61,7 +62,7 @@ public class UserController : ApiBaseController
         }
         catch (UserNotFoundException e)
         {
-            return BadRequest("user_not_found", "User not found");
+            return BadRequest(FrontEndErrors.UserNotFound.ErrorCode, FrontEndErrors.UserNotFound.ErrorMessage);
         }
     }
     
@@ -74,11 +75,11 @@ public class UserController : ApiBaseController
         }
         catch (UserNotFoundException e)
         {
-            return BadRequest("user_not_found", "User not found");
+            return BadRequest(FrontEndErrors.UserNotFound.ErrorCode, FrontEndErrors.UserNotFound.ErrorMessage);
         }
         catch (UserAlreadyExistsException e)
         {
-            return BadRequest("email_already_exists", "Email already exists");
+            return BadRequest(FrontEndErrors.EmailAlreadyExists.ErrorCode, FrontEndErrors.EmailAlreadyExists.ErrorMessage);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿create table contact
+﻿create table ${schema}.contact
 (
     id             serial
         primary key,
@@ -10,10 +10,10 @@
     updated_on_utc timestamp default now()
 );
 
-alter table contact
+alter table ${schema}.contact
     owner to postgres;
 
-create table "user"
+create table ${schema}.user
 (
     id             serial
         primary key,
@@ -26,13 +26,13 @@ create table "user"
     updated_on_utc timestamp,
     contact_id     integer
         constraint contact_id_constr
-            references contact
+            references ${schema}.contact
 );
 
-alter table "user"
+alter table ${schema}.user
     owner to postgres;
 
-create table location
+create table ${schema}.location
 (
     id             serial
         primary key,
@@ -46,10 +46,10 @@ create table location
     updated_on_utc timestamp
 );
 
-alter table location
+alter table ${schema}.location
     owner to postgres;
 
-create table counter
+create table ${schema}.counter
 (
     id             serial
         primary key,
@@ -60,6 +60,5 @@ create table counter
     updated_on_utc timestamp
 );
 
-alter table counter
+alter table ${schema}.counter
     owner to postgres;
-

@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using VaraticPrim.Domain.Entities;
 using VaraticPrim.Repository.Persistence;
+using VaraticPrim.Repository.Repository.Interfaces;
 
-namespace VaraticPrim.Repository.Repository;
+namespace VaraticPrim.Repository.Repository.Implementations;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new()
 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Framework.Errors;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.LoginModel;
@@ -27,8 +28,7 @@ public class AuthenticationController : ApiBaseController
         }
         catch (EmailOrPasswordNotFoundException)
         {
-            return BadRequest("email_password_not_found",
-                "Email or password incorrect");
+            return BadRequest(FrontEndErrors.EmailOrPasswordNotFound.ErrorCode, FrontEndErrors.EmailOrPasswordNotFound.ErrorMessage);
         }
     } 
     
@@ -43,8 +43,7 @@ public class AuthenticationController : ApiBaseController
         }
         catch (InvalidAccessTokenOrRefreshTokenException)
         {
-            return BadRequest("invalid_token",
-                "Invalid token");
+            return BadRequest(FrontEndErrors.InvalidToken.ErrorCode, FrontEndErrors.InvalidToken.ErrorMessage);
         }
     } 
 }

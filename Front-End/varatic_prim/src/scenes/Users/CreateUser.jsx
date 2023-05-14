@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {ErrorMessage, Formik} from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -14,6 +14,13 @@ const Form = () => {
   let [error, setError] = useState("");
   let [repeatCreateUser, setRepreatCreateUser] = useState(false);
 
+
+  const handelChange = () => {
+    setRepreatCreateUser(!repeatCreateUser);
+  }
+    const handleReset = (resetForm) => {
+      resetForm();
+    }
   const handleFormSubmit = async (values) => {
       try {
 
@@ -33,8 +40,12 @@ const Form = () => {
               }
           )
 
-          if(!repeatCreateUser)
-            navigate("/users");
+          if(!repeatCreateUser) {
+              navigate("/users");
+          }
+          else {
+              navigate("/user/add");
+          }
       }
       catch(err) {
           if (err && err instanceof AxiosError) {
@@ -59,13 +70,22 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
-      
-      <Box marginBottom={"25px"} width="100%" display={"flex"} justifyContent={"flex-end"}>
-        <Button onClick={backUserHandler} style={{backgroundColor: "#0075F2", fontSize: "14px"}}>
-          <ArrowBackOutlined /> <Box marginLeft={"10px"}>Back to list</Box> 
-        </Button>
-      </Box>
+        <Header title="CREATE USER" subtitle="Create a New User Profile" />
+
+
+
+        <Box marginBottom={"25px"} width="100%" display={"flex"} justifyContent={"flex-end"}>
+            <FormControlLabel
+                style={{color: "#141B2D", backgroundColor: "#0075F2", paddingRight: "15px", borderRadius: "5px"}}
+                control={
+                    <Checkbox checked={repeatCreateUser} onChange={handelChange} />
+                }
+                label="Adaugare repetata"
+            />
+            <Button onClick={backUserHandler} style={{backgroundColor: "#0075F2", fontSize: "14px"}}>
+              <ArrowBackOutlined /> <Box marginLeft={"10px"}>Back to list</Box>
+            </Button>
+        </Box>
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -74,12 +94,14 @@ const Form = () => {
       >
 
         {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              resetForm,
+            setFormikState
         }) => (
           <form onSubmit={handleSubmit}>
               <Box color={"red"}>
@@ -186,7 +208,8 @@ const Form = () => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained" style={{fontSize: "14px"}}>
+              <Button type="submit" onClick={handleReset.bind(null, resetForm)}
+                      color="secondary" variant="contained" style={{fontSize: "14px"}}>
                 Create New User
               </Button>
             </Box>

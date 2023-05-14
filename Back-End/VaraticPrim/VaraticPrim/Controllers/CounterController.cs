@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using VaraticPrim.Framework.Errors;
 using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Managers;
 using VaraticPrim.Framework.Models.CounterModels;
@@ -38,7 +39,7 @@ public class CounterController : ApiBaseController
         }
         catch (CounterNotFoundException)
         {
-            return BadRequest("counter_not_found", "Counter not found");
+            return BadRequest(FrontEndErrors.CounterNotFound.ErrorCode, FrontEndErrors.CounterNotFound.ErrorMessage);
         }
     }
     
@@ -52,20 +53,33 @@ public class CounterController : ApiBaseController
         }
         catch (CounterNotFoundException e)
         {
-            return BadRequest("counter_not_found", "Counter not found");
+            return BadRequest(FrontEndErrors.CounterNotFound.ErrorCode, FrontEndErrors.CounterNotFound.ErrorMessage);
         }
     }
     
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromBody] CounterUpdateModel counterModel, [FromRoute] int id)
+    // [HttpPut("{id:int}")]
+    // public async Task<IActionResult> Update([FromBody] CounterUpdateModel counterModel, [FromRoute] int id)
+    // {
+    //     try
+    //     {
+    //         return Ok(await _counterManager.Update(counterModel, id));
+    //     }
+    //     catch (CounterNotFoundException e)
+    //     {
+    //         return BadRequest(FrontEndErrors.CounterNotFound.ErrorCode, FrontEndErrors.CounterNotFound.ErrorMessage);
+    //     }
+    // }
+    
+    [HttpPut("update-value")]
+    public async Task<IActionResult> UpdateByBarCode([FromBody] CounterUpdateModel counterModel)
     {
         try
         {
-            return Ok(await _counterManager.Update(counterModel, id));
+            return Ok(await _counterManager.UpdateByBarCode(counterModel));
         }
-        catch (LocationNotFoundException e)
+        catch (InvalidCounterValueException e)
         {
-            return BadRequest("counter_not_found", "Counter not found");
+            return BadRequest(FrontEndErrors.InvalidCounterValue.ErrorCode, FrontEndErrors.InvalidCounterValue.ErrorMessage);
         }
     }
 }
