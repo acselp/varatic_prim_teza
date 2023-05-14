@@ -12,6 +12,7 @@ public class CounterProfile : Profile
     {
         CreateMap<CounterCreateModel, CounterEntity>();
         CreateMap<CounterUpdateModel, CounterEntity>();
+        CreateMap<CounterEntity, CounterUpdateModel>();
         CreateMap<CounterEntity, CounterModel>();
     }
 }

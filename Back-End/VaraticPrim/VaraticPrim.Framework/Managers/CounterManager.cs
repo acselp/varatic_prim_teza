@@ -7,6 +7,7 @@ using VaraticPrim.Framework.Models.CounterModels;
 using VaraticPrim.Framework.Models.LocationModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Repository.Repository.Interfaces;
 
 namespace VaraticPrim.Framework.Managers;
 
@@ -93,7 +94,7 @@ public class CounterManager
         {
             var counter = await _counterRepository.GetById(id);
             
-            if (counter == null)
+            if (!await _counterRepository.CounterExists(id))
             {
                 _logger.LogWarning($"Counter with id = {id} not found", id);
                 throw new CounterNotFoundException($"Counter with id = {id} not found");
@@ -112,22 +113,56 @@ public class CounterManager
         }
     }
     
-     public async Task<CounterModel> Update(CounterUpdateModel counter, int id)
+    //  public async Task<CounterModel> Update(CounterUpdateModel counter, int id)
+    //  {
+    //      try
+    //      {
+    //          var counterFromDb = await _counterRepository.GetById(id);
+    //          await _counterUpdateValidator.ValidateAndThrowAsync(counter);
+    //          
+    //          if (!await _counterRepository.CounterExists(counter.Barcode))
+    //          {
+    //              _logger.LogWarning($"Counter with id = {id} not found", id);
+    //              throw new CounterNotFoundException($"Counter with id = {id} not found");
+    //          }
+    //
+    //          var counterEntity = _mapper.Map<CounterEntity>(counter);
+    //
+    //          await _counterRepository.Update(counterEntity);
+    //
+    //          return _mapper.Map<CounterModel>(counterFromDb);
+    //      }
+    //      catch (Exception e)
+    //      {
+    //          _logger.LogError(e, "Failed to update counter");
+    //          throw;
+    //      }
+    // }
+
+     public async Task<CounterModel> UpdateByBarCode(CounterUpdateModel counter)
      {
          try
          {
-             var counterFromDb = await _counterRepository.GetById(id);
+             _logger.LogInformation("Start updating counter");
+
+             var counterFromDb = await _counterRepository.GetByBarCode(counter.Barcode);
              await _counterUpdateValidator.ValidateAndThrowAsync(counter);
-             
-             if (counterFromDb == null)
+
+             if (!await _counterRepository.CounterExists(counter.Barcode))
              {
-                 _logger.LogWarning($"Counter with id = {id} not found", id);
-                 throw new CounterNotFoundException($"Counter with id = {id} not found");
+                 _logger.LogWarning($"Counter with barcode = {counter.Barcode} not found");
+                 throw new CounterNotFoundException($"Counter with barcode = {counter.Barcode} not found");
              }
-    
-             var counterEntity = _mapper.Map<CounterEntity>(counter);
-    
-             await _counterRepository.Update(counterEntity);
+
+             if (counter.Value < counterFromDb.Value)
+             {
+                 _logger.LogWarning($"You are trying to set the value of the counter to a smaller one. Value on counter: {counterFromDb.Value}, the attempted value: {counter.Value}");
+                 throw new InvalidCounterValueException($"You are trying to set the value of the counter to a smaller one. Value on counter: {counterFromDb.Value}, the attempted value: {counter.Value}");
+             }
+
+             counterFromDb.Value = counter.Value;
+
+             await _counterRepository.Update(counterFromDb);
     
              return _mapper.Map<CounterModel>(counterFromDb);
          }
@@ -136,5 +171,5 @@ public class CounterManager
              _logger.LogError(e, "Failed to update counter");
              throw;
          }
-    }
+     }
 }

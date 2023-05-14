@@ -8,7 +8,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
 {
     public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
     {
-        builder.ToTable("refresh_token", schema:"public");
+        builder.ToTable("refresh_token", schema:"varatic_prim");
         
         builder.HasOne<UserEntity>(e => e.UserEntity)
             .WithMany()

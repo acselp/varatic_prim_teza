@@ -25,7 +25,8 @@ public class MailingService : IMailingService
         {
             From = fromEmail,
             Subject = subject,
-            Body = body
+            Body = body,
+            IsBodyHtml = true
         };
         mailMessage.To.Add(toEmail);
 

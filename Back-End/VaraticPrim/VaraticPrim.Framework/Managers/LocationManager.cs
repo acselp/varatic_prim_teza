@@ -6,6 +6,7 @@ using VaraticPrim.Framework.Exceptions;
 using VaraticPrim.Framework.Models.LocationModels;
 using VaraticPrim.Framework.Models.UserModels;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Repository.Repository.Interfaces;
 
 namespace VaraticPrim.Framework.Managers;
 
@@ -22,10 +23,12 @@ public class LocationManager
         IUserRepository userRepository,
         ILocationRepository locationRepository,
         IMapper mapper,
-        ILogger<LocationManager> logger)
+        ILogger<LocationManager> logger, IValidator<LocationCreateModel> locationCreateValidator, IValidator<LocationUpdateModel> locationUpdateValidator)
     {
         _userRepository = userRepository;
         _logger = logger;
+        _locationCreateValidator = locationCreateValidator;
+        _locationUpdateValidator = locationUpdateValidator;
         _locationRepository = locationRepository;
         _mapper = mapper;
     }

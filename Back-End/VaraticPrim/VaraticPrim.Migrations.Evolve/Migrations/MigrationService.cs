@@ -16,12 +16,13 @@ public class MigrationService:IMigrationService
         {
             Locations = new[]{location},
             IsEraseDisabled = true,
+            MetadataTableSchema	= "varatic_prim"
         };
 
         _evolve.Placeholders = new Dictionary<string, string>
         {
             ["${database}"] = "postgres",
-            ["${schema}"] = "public"
+            ["${schema}"] = "varatic_prim"
         };
     }
 

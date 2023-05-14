@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using VaraticPrim.Repository.Repository;
+using VaraticPrim.Repository.Repository.Interfaces;
 using VaraticPrim.Service.Interfaces;
 
 namespace VaraticPrim.Service.Services;
